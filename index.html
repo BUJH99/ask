@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A!SK 면접 준비 대시보드</title>
+    
+    <!-- Pretendard Font (Toss 스타일의 핵심인 깔끔한 폰트) -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    },
+                    colors: {
+                        toss: {
+                            bg: '#F2F4F6',        /* 토스 특유의 배경색 */
+                            white: '#FFFFFF',
+                            text: '#191F28',      /* 기본 텍스트 (완전 검은색이 아닌 진한 회색) */
+                            subtext: '#8B95A1',   /* 보조 텍스트 (설명, 날짜 등) */
+                            blue: '#3182F6',      /* 토스 프라이머리 블루 */
+                            blueHover: '#1B64DA',
+                            blueBg: '#E8F3FF',    /* 연한 블루 배경 */
+                            border: '#E5E8EB'     /* 연한 테두리색 */
+                        }
+                    },
+                    boxShadow: {
+                        'toss': '0 2px 14px rgba(0, 0, 0, 0.04)', /* 부드러운 카드 그림자 */
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #F2F4F6;
+            color: #191F28;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.02em;
+        }
+        
+        /* 모바일 탭 스크롤바 숨기기 */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* 아코디언 애니메이션 */
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin 0.3s ease-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            margin-top: 0;
+        }
+        .accordion-content.open {
+            max-height: 500px; /* 충분히 큰 값 */
+            opacity: 1;
+            margin-top: 1rem;
+        }
+        .chevron {
+            transition: transform 0.3s ease;
+        }
+        .chevron.open {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body class="flex flex-col md:flex-row min-h-screen">
+
+    <!-- 모바일용 상단 네비게이션 (데스크탑에선 숨김) -->
+    <header class="md:hidden bg-toss-white sticky top-0 z-50 shadow-sm">
+        <div class="px-5 py-4 flex items-center justify-between">
+            <h1 class="text-xl font-bold text-toss-text tracking-tight">A!SK 준비</h1>
+            <button class="w-10 h-10 flex items-center justify-center bg-toss-bg rounded-full">
+                <i class="ph ph-user text-xl text-toss-text"></i>
+            </button>
+        </div>
+        <!-- 모바일 탭 메뉴 -->
+        <nav class="flex overflow-x-auto hide-scrollbar px-5 pb-3 gap-3" id="mobile-nav">
+            <!-- JS로 렌더링됨 -->
+        </nav>
+    </header>
+
+    <!-- 데스크탑용 좌측 사이드바 -->
+    <aside class="hidden md:flex flex-col w-72 bg-toss-white h-screen sticky top-0 border-r border-toss-border py-8 px-6 z-40">
+        <div class="mb-10 px-2">
+            <h1 class="text-2xl font-bold text-toss-text tracking-tight mb-1">SK Hynix</h1>
+            <p class="text-toss-blue font-semibold text-lg">A!SK</p>
+        </div>
+        
+        <p class="text-xs font-semibold text-toss-subtext mb-3 px-2">INDEX</p>
+        <nav class="flex-1 overflow-y-auto hide-scrollbar flex flex-col space-y-1 mb-6" id="desktop-nav">
+            <!-- JS로 렌더링됨 -->
+        </nav>
+
+        <div class="mt-auto px-2">
+            <div class="bg-toss-bg rounded-2xl p-4 flex items-center gap-3 cursor-pointer hover:bg-gray-200 transition">
+                <div class="w-10 h-10 rounded-full bg-toss-white flex items-center justify-center shadow-sm">
+                    <i class="ph ph-student text-toss-blue text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-toss-text">지원자님</p>
+                    <p class="text-xs text-toss-subtext">면접 7-12 · <span id="d-day-text">D-8</span></p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="flex-1 w-full max-w-5xl mx-auto md:mx-0 md:px-10 pb-20 pt-6 md:pt-14">
+        
+        <!-- 페이지 헤더 -->
+        <div class="px-6 md:px-0 mb-8" id="page-header">
+            <!-- JS로 렌더링됨 -->
+        </div>
+
+        <!-- 질문 리스트 (아코디언 카드) -->
+        <div class="px-4 md:px-0 flex flex-col space-y-4" id="qa-container">
+            <!-- JS로 렌더링됨 -->
+        </div>
+
+    </main>
+
+    <script>
+        // 면접 Q&A 목업 데이터
+        const interviewData = {
+            dram: {
+                title: "DRAM",
+                subtitle: "가장 기본적인 메모리 반도체. 설계 직무 기준의 파라미터 및 동작 속도 제어를 학습하세요.",
+                icon: "ph-memory",
+                questions: [
+                    // 1. DRAM 구조 및 동작원리
+                    { q: "DRAM의 1T1C 구조와 동작 원리를 설명해주세요.", a: "DRAM은 <strong>1T1C 구조</strong>로, <strong>워드라인(WL)</strong>은 트랜지스터 스위치를 제어하고, <strong>비트라인(BL)</strong>은 전하를 이동시키는 데이터 입출력 경로 역할을 하며, <strong>커패시터(Cs)</strong>는 전하 축적 유무에 따라 <strong>디지털 데이터 '1'과 '0'을 구분하여 저장</strong>합니다. <strong>Read 동작</strong> 시에는 커패시터 전하가 비트라인과 <strong>전하 분배(Charge Sharing)</strong>되어 미세한 전압 차이를 형성하고, <strong>Write 동작</strong> 시에는 비트라인에 인가된 강한 VDD/GND 전위로 커패시터를 <strong>강제 충방전시켜 데이터를 기록</strong>합니다. 설계 관점에서는 고집적화에 따라 셀 면적이 줄어들어 <strong>정전용량(Cs)이 감소</strong>하고 누설 전류로 데이터가 사라지는 한계가 있습니다. 이를 극복하고자 유전율이 높은 <strong>High-k 유전체</strong>를 도입하고, 게이트를 매립해 <strong>유효 채널 경로를 길게 확보하는 BCAT 구조</strong>를 적용하고 있습니다." },
+                    
+                    // 2. DRAM 주요 동작들
+                    { q: "Sense Amplifier의 역할에 대해 설명해보세요.", a: "Sense Amplifier(S/A)는 DRAM 셀에서 읽어낸 비트라인의 <strong>미세한 전압 차이를 VDD와 VSS 레벨로 빠르게 증폭</strong>하여 데이터를 명확히 판별하는 회로입니다. 읽기 동작 시 비트라인과 셀 커패시터 간의 <strong>전하 분배(Charge Sharing)</strong>가 일어나면 비트라인 쌍에 아주 작은 전압 차가 발생하며, S/A가 이를 신속하게 감지 및 증폭하여 데이터 손실을 막고 열려 있는 셀 데이터를 재기록합니다. 설계 시에는 S/A 구성 트랜지스터들의 문턱 전압 불일치(Vth mismatch)로 인한 센싱 에러를 예방하는 것이 가장 중요하며, 이를 해결하기 위해 오프셋을 사전에 보상해 주는 <strong>오프셋 제거(Offset Cancellation) 회로</strong>를 설계에 적용합니다." },
+                    { q: "DRAM의 주요 동작 시퀀스(Active - Read/Write - Precharge)의 핵심 제어 흐름을 설명해 주세요.", a: "DRAM의 동작은 <strong>Active, Read/Write, Precharge 단계</strong>로 순차 제어됩니다. <strong>Active</strong> 단계에서는 행 주소 입력 후 워드라인을 켜 셀의 전하를 비트라인과 분배하는 <strong>Charge Sharing</strong>을 유도하고, 센스앰프(S/A)를 켜 전위차를 증폭 및 복구합니다. <strong>Read/Write</strong> 단계에서는 열 선택 선(CSL)을 켜 S/A에 래치된 데이터를 I/O 라인으로 전송하거나 데이터를 기록합니다. 마지막 <strong>Precharge</strong> 단계에서는 워드라인을 차단해 셀을 격리하고, 이퀄라이저 회로를 구동해 비트라인 쌍을 <strong>Half-VDD(VDD/2) 전위로 등전위화</strong>하여 다음 동작을 대기합니다." },
+                    { q: "DRAM의 tRCD, tRP, tCL 파라미터가 회로 설계적 측면에서 의미하는 바는 무엇인가요?", a: "<strong>tRCD</strong>는 워드라인이 켜지고 비트라인 센스앰프가 활성화되어 읽기 명령을 수행할 수 있을 때까지의 지연 시간으로, 워드라인 배선의 저항/캐패시턴스(RC) 지연 감소가 설계 관건입니다. <strong>tRP</strong>는 사용한 뱅크를 닫고 비트라인 전압을 VDD의 절반으로 초기화하는 프리차지 시간이며, 프리차지 회로의 충방전 속도에 영향받습니다. <strong>tCL</strong>은 읽기 명령 인가 후 첫 데이터가 외부 핀으로 출력될 때까지의 대기 시간입니다. 데이터 경로의 지연 시간을 최소화하기 위해 고속 리피터와 스큐를 조율하는 <strong>DLL(Delay Locked Loop) 설계 최적화</strong>가 메인 설계 기법입니다." },
+                    
+                    // 3. DRAM 트러블슈팅
+                    { q: "DRAM에서 Refresh가 필요한 이유는 무엇인가요?", a: "DRAM의 데이터 저장소인 커패시터는 시간이 지남에 따라 <strong>누설 전류로 인해 저장된 전하를 점차 상실</strong>하게 됩니다. 이로 인해 데이터를 오인식하는 오류가 생기므로, 데이터가 사라지기 전 주기적으로 원래 데이터를 다시 읽고 보강해 주는 <strong>Refresh 동작이 필수적</strong>입니다. 설계 엔지니어는 누설 전류 경로를 최소화하는 레이아웃을 고안하고, 전력 소모를 줄이기 위해 셀의 온도 변화에 따라 리프레시 주기를 유연하게 제어하는 <strong>PASR(Partial Array Self Refresh) 회로 기법</strong> 등을 탑재하여 효율성을 높입니다." },
+                    { q: "DRAM 캐패시터 용량(Cs) 확보를 위한 기술적 대책은 무엇인가요?", a: "DRAM의 미세화 공정이 진행될수록 커패시터 면적이 좁아져 정전용량(Cs)이 감소하므로, 충분한 센싱 마진을 얻기 위한 용량 확보가 필수적입니다. 이를 극복하기 위해 물리적 표면적을 늘릴 수 있도록 실린더(Cylinder) 또는 필라(Pillar) 형태의 수직 구조를 도입하고 <strong>종횡비(Aspect Ratio)를 극대화</strong>합니다. 또한, 기존 유전체인 산화막 대신 유전율이 매우 높은 <strong>High-k 금속 산화물(ZrO2, Al2O3)</strong> 기반의 다층 박막 구조를 활용합니다. 설계단에서는 커패시터 전하 누설을 줄이기 위해 전원 라인의 노이즈를 필터링하고 워드라인 부스팅 레벨을 안정적으로 공급하는 레귤레이터 회로 설계를 병행합니다." },
+                    { q: "Row Hammer(로우 해머) 현상과 대응 방안은 무엇인가요?", a: "로우 해머는 특정 워드라인(Aggressor Row)을 매우 빠른 속도로 연속해서 활성화할 경우 <strong>인접한 워드라인(Victim Row) 셀 커패시터의 전하가 누설되어 데이터가 깨지는 불량 현상</strong>입니다. 기생 커패시턴스 결합이나 전하 포획 등이 원인입니다. 회로 설계적 대응 방안으로는 메모리 내부 컨트롤러가 워드라인 활성화 횟수를 모니터링하여 위험 수치에 도달하면 주변 인접 행들을 집중적으로 강제 리프레시해 주는 <strong>TRR(Target Row Refresh) 기술</strong>을 칩 내부에 집적합니다. 또한 셀 간 분리 영역인 소자 격리막(STI) 설계의 기생 정전용량 결합을 줄이는 레이아웃을 고안합니다." },
+                    
+                    // 4. DRAM 트레이드오프
+                    { q: "DRAM 셀 및 회로 설계 시 속도(tRCD/tRP) 향상과 전력/노이즈 간의 트레이드오프 관계는 무엇이며 이를 어떻게 극복하나요?", a: "DRAM의 동작 속도(tRCD, tRP)를 높이기 위해 워드라인과 비트라인을 빠르게 충방전시키면, <strong>Peak 전류 급증에 따른 전원 노이즈(IR Drop) 및 신뢰성 저하와 트레이드오프 관계</strong>를 가집니다. RC 지연을 줄이려 드라이버 소자가 키우면, 순간적으로 과도한 전류가 흘러 공급 전압을 떨어뜨려 주변 회로의 오동작을 유발합니다. 이를 극복하기 위해 설계 시 워드라인의 동작 타이밍을 다단계로 미세하게 분산 구동하는 <strong>구간 제어 및 분할 드라이버 기법</strong>을 적용합니다. 또한 어레이 내부 전원 배선에 <strong>디커플링 커패시터(Decap)</strong>를 분산 배치하여 스위칭 노이즈 마진을 확보함으로써 속도와 전력 안정성을 동시 충족합니다." },
+                    
+                    // 5. SRAM 구조 및 동작원리
+                    { q: "SRAM 셀의 기본 구조(6T 구조)와 Read/Write 동작 원리를 설명해 주세요.", a: "SRAM 셀은 <strong>2개의 풀업, 2개의 풀다운, 2개의 패스게이트 트랜지스터로 구성된 6T 구조</strong>를 가집니다. <strong>Read 동작</strong> 시에는 비트라인 쌍을 VDD로 프리차지한 후 워드라인을 활성화하며, 셀 내부 '0'이 저장된 노드와 연결된 비트라인 전위가 패스게이트를 통해 방전되면서 생기는 전압 차를 감지해 읽습니다. <strong>Write 동작</strong> 시에는 비트라인 쌍에 강제로 서로 반대되는 레벨을 인가하고 패스게이트를 켜서 래치의 전기적 평형 상태를 깨뜨려 데이터를 플립시킵니다. 설계 시에는 저전압 조건에서 데이터가 지워지는 <strong>홀드 마진(Hold Margin) 저하를 방지</strong>하기 위해 트랜지스터 간 문턱 전압 일치(Mismatch) 보정 레이아웃을 필수적으로 적용합니다." },
+                    
+                    // 6. SRAM 트러블슈팅
+                    { q: "SRAM 셀 설계 시 발생할 수 있는 'Half-Select(하프 셀렉트)' 불량 현상과 회로적 트러블슈팅 방안을 설명해 주세요.", a: "SRAM의 하프 셀렉트 현상은 쓰기 동작 시 선택된 행의 비선택 셀들이 <strong>워드라인만 활성화된 채 읽기 스트레스를 받아 데이터가 원치 않게 반전되는 불량 현상</strong>입니다. 비트라인이 VDD로 유지된 상태에서 워드라인이 켜지면 사실상 리드 동작이 수행되어 셀 내부 데이터가 플립될 위험에 노출됩니다. 이를 트러블슈팅하기 위해 설계단에서는 동일 행의 셀들을 물리적으로 분산시키는 <strong>열 인터리빙(Column Interleaving) 레이아웃</strong>을 적용합니다. 또한, 쓰기 시 비선택 열의 비트라인 전위를 순간적으로 보상해주거나 워드라인 전압을 미세하게 클램핑해주는 <strong>디스터번스 방지 어시스트 회로</strong>를 집적하여 오동작을 방지합니다." },
+                    
+                    // 7. SRAM 트레이드오프
+                    { q: "SRAM 셀 설계 시 Read Margin과 Write Margin의 트레이드오프 관계를 설명해 주세요.", a: "SRAM 셀 설계 시 읽기 안정성(Read Margin)과 쓰기 용이성(Write Margin)은 상충하는 <strong>트레이드오프 관계</strong>를 지닙니다. Read 동작 시에는 비트라인 전하에 의해 저장 노드 데이터가 반전되지 않도록 풀다운 NMOS가 패스게이트보다 충분히 강해야 안정적입니다. 반면 Write 동작 시에는 기존 노드 데이터를 강제 반전시켜야 하므로 패스게이트가 풀업 PMOS 로드보다 강해야 쉽게 기록됩니다. 이 모순을 극복하기 위해 설계 시 읽기 동작에서 워드라인 전압을 미세하게 낮춰주는 <strong>WL 언더드라이브(Underdrive)</strong> 기법이나, 쓰기 시 셀의 공급전원을 일시적으로 떨어뜨려 주는 <strong>Vdd 쓰기 어시스트(Write Assist) 회로</strong>를 적용합니다." },
+                    
+                    // 8. DRAM과 SRAM 비교
+                    { q: "SRAM과 DRAM의 구조적 차이점과 동작 특성을 비교해 주세요.", a: "SRAM은 <strong>교차 결합된 인버터 래치(6T 구조)</strong>를 사용해 데이터를 전기적으로 유지하는 정적 메모리이며, 커패시터를 사용하는 DRAM에 비해 동작 속도가 매우 빠르고 <strong>Refresh 동작이 필요 없습니다.</strong> 데이터 보존성이 우수하여 캐시 메모리로 쓰이지만, 셀 면적이 커 집적도에서는 DRAM 대비 불리합니다. 회로 설계적으로는 초미세 공정에서 트랜지스터 문턱 전압 편차로 인해 <strong>스태틱 노이즈 마진(SNM)이 감소</strong>하여 오동작할 위험이 큽니다. 이를 방지하기 위해 읽기/쓰기 모드에서 풀업/pull다운/패스게이트 트랜지스터 간의 <strong>사이즈 비(Beta Ratio)를 정밀 조율</strong>하고 어시스트 회로를 집적하여 안정성을 보장합니다." }
+                ]
+            },
+            nand: {
+                title: "NAND Flash",
+                subtitle: "비휘발성 메모리의 핵심. 스택 구조와 WL 로딩을 극복하는 회로 제어가 중요합니다.",
+                icon: "ph-stack",
+                questions: [
+                    { q: "NAND Flash의 쓰기(Program)와 지우기(Erase) 동작 원리는?", a: "NAND 플래시는 절연막 내부의 <strong>차지 트랩 레이어(CTF)에 전자를 가두거나 방출</strong>하여 데이터를 저장합니다. 쓰기 동작은 선택된 제어 게이트에 높은 고전압(약 20V)을 가해 채널의 전자가 터널 산화막을 통과해 트랩층으로 들어오게 만드는 <strong>FN 터널링 효과</strong>를 이용합니다. 지우기는 기판(Substrate)에 높은 전압을 인가하고 게이트를 0V로 두어 전자를 다시 기판으로 방출시킵니다. 설계 시에는 미세한 전압 조절이 필수적이므로 고전압을 생성하는 차지 펌프(Charge Pump)와 이를 정밀하게 쪼개어 단계적으로 높여 전압을 인가하는 <strong>ISPP 알고리즘 제어 회로 설계</strong>가 핵심입니다." },
+                    { q: "Floating Gate와 CTF(Charge Trap Flash)의 차이점은?", a: "플로팅 게이트는 도체 폴리실리콘에 전자를 저장하므로 두께가 두껍고 인접 셀 간 기생 정전용량 결합으로 인한 간섭(Interference) 현상이 큽니다. 반면 <strong>CTF는 질화막(SiN)과 같은 부도체 격자 구조에 전자를 트랩</strong>하므로 누설 위험이 적고 박막화가 가능합니다. 이를 통해 셀 간 간섭을 획기적으로 낮추어 셀 간격을 미세화할 수 있으며 3D 수직 적층 공정 구현을 가능케 만들었습니다. 설계적 관점에서는 CTF 도입으로 인해 <strong>낮아진 셀 간 간섭 레벨</strong>을 바탕으로 읽기 동작 시 문턱 전압 분해능 마진을 더 넓게 가져갈 수 있으며 읽기 패스 전압 설계를 다변화하는 제어가 가능해졌습니다." },
+                    { q: "3D NAND에서 단수가 높아질수록 발생하는 공정상 이슈는?", a: "3D NAND 단수가 높아질수록 채널 홀을 한 번에 관통해 뚫는 식각(Etch) 공정 난이도가 급증합니다. 구멍이 아래로 갈수록 좁아지는 테이퍼링(Tapering) 현상이나 수직 정렬 어긋남이 발생하여 <strong>최하단과 최상단 셀의 트랜지스터 크기 차이로 인한 문턱 전압(Vth) 불균일</strong>이 유발됩니다. 회로 설계 엔지니어는 이러한 셀 구조적 편차로 인한 오동작을 보상하기 위해, 워드라인의 물리적 높이에 따라 리드/라이트 바이어스 전압을 세부 영역별로 다르게 가변 제어하는 <strong>슬로프 전압 제어 및 적응형 전압 발생기 회로</strong>를 설계하여 칩의 동작 안정성을 확보해야 합니다." },
+                    { q: "NAND Flash의 SLC, MLC, TLC, QLC 방식의 특징을 설명해주세요.", a: "한 셀에 저장하는 비트 수에 따른 구분으로, SLC는 1비트(2개 상태), MLC는 2비트, TLC는 3비트, QLC는 4비트(16개 상태)를 저장합니다. 비트 수가 늘수록 동일 면적당 용량은 증가하나 <strong>문턱 전압 마진이 좁아져</strong> 속도가 느려지고 수명이 단축됩니다. 회로 설계 관점에서는 16개의 미세한 전압 레벨 분해능을 검출해내기 위해 노이즈가 극히 적은 <strong>고감도 페이지 버퍼(Page Buffer) 감지 회로</strong>와 다이내믹 센싱 기법이 핵심입니다. 또한 읽기 에러율 증가에 대응하여 에러를 정밀 복구하는 강력한 <strong>ECC(에러 정정) 컨트롤러 IP 설계 협력이 수반</strong>됩니다." },
+                    { q: "NAND의 Cell-to-Cell Interference(셀 간 간섭) 극복 방안은 무엇인가요?", a: "셀 간 간섭은 인접 셀의 쓰기 동작 전하 주입으로 인한 전계 변화가 이웃 셀의 문턱 전압(Vth)을 왜곡시키는 현상입니다. 설계적 극복 방안으로는 쓰기 시 인접 셀의 전압 변화 영향을 분산하기 위해 전압 레벨을 조금씩 번갈아 프로그래밍하는 <strong>섀도우 프로그램(Shadow Program)</strong>이나 2-pass 프로그램 기법을 적용합니다. 또한, 읽기 시에는 인접 워드라인의 상태를 미리 파악하고 그 상태에 따라 읽기 전압을 보상하여 인가하는 <strong>리드 리클레임 및 프리-리드(Pre-read) 보상 바이어스 제어 회로</strong>를 어레이 주변부 설계단에 구현하여 극복합니다." },
+                    { q: "3D NAND의 Wordline Loading 증가 문제를 회로 설계적으로 어떻게 극복하나요?", a: "3D NAND에서 워드라인 단수가 올라가고 블록 크기가 커지면 워드라인의 배선 길이가 길어지고 기생 캡 성분이 늘어나 저항-정전용량(RC) 지연이 급증합니다. 이는 쓰기/읽기 동작 시 전압 안정화 속도를 떨어뜨립니다. 이를 설계적으로 해결하기 위해 워드라인 양방향에서 독립적인 WL 드라이버가 동시에 전압을 인가하는 <strong>더블 사이드 구동(Double-sided Drive) 레이아웃</strong>을 도입합니다. 또한 고전압 충전 속도를 향상시키기 위해 과충전 기술인 <strong>프리-엠파시스(Pre-emphasis) 제어 루프</strong>와 구동 드라이버의 크기를 최적화하여 딜레이를 단축시킵니다." }
+                ]
+            },
+            cmos: {
+                title: "CMOS 회로",
+                subtitle: "디지털 회로 설계의 뼈대. 스위칭 특성과 전력 최소화 설계 기법이 핵심입니다.",
+                icon: "ph-cpu",
+                questions: [
+                    { q: "CMOS를 사용하는 가장 큰 이유는 무엇인가요?", a: "CMOS는 NMOS와 PMOS를 상보적으로 결합하여 구성한 회로로, <strong>정적 전력 소모(Static Power Dissipation)가 0에 가깝다</strong>는 장점 때문에 사용됩니다. 입력 상태가 하이 또는 로우로 유지되는 정상 상태에서는 PMOS와 NMOS 중 반드시 하나가 꺼져 VDD에서 GND로 흐르는 전류 경로가 차단됩니다. 단, 전위가 바뀌는 천이 동작 순간에는 두 소자가 일시적으로 동시에 켜져 단락 전류와 충방전 전류에 의한 동적 전력이 소모됩니다. 설계 시에는 이러한 동적 전력과 누설 전류를 줄이기 위해 소자의 물리적 배치를 최적화하고 누설 억제용 기판 바이어스 설계 등을 적용합니다." },
+                    { q: "Latch-up 현상이란 무엇이며 어떻게 방지하나요?", a: "래치업은 CMOS 구조 내부에 형성된 기생 p-n-p-n 바이폴라(SCR) 구조가 오동작하여 <strong>VDD와 GND 사이에 저항이 낮은 급격한 전류 경로가 열려 과전류로 칩이 파괴되는 현상</strong>입니다. 외부 노이즈나 급격한 전원 전압 인가가 주요 원인입니다. 설계 예방 대책으로는 기생 트랜지스터의 이득을 낮추기 위해 n웰과 p기판의 기생 저항을 줄이는 <strong>가드링(Guard Ring) 배치를 촘촘하게</strong> 둘러 노이즈 전하를 방출시킵니다. 또한 웰 콘택을 활성 영역에 가깝고 촘촘하게 배치하여 저항 성분을 낮추고, 레이아웃 단계에서 PMOS와 NMOS 간 격리 거리 규격을 철저히 준수하여 설계합니다." },
+                    { q: "Short Channel Effect(단채널 효과)와 해결 방안은 무엇인가요?", a: "단채널 효과는 MOSFET의 채널 길이가 극도로 짧아짐에 따라 게이트의 채널 지배력이 약화되고 드레인 공핍 영역이 소스에 영향을 미쳐 <strong>문턱 전압이 감소하고 누설 전류가 증가하는 현상</strong>입니다. DIBL이나 펀치스루 등이 포함됩니다. 설계적 해결을 위해 게이트 절연막 두께를 얇게 하고 High-k 유전체를 사용하며, 채널 접합 구조를 3차원으로 확장하여 게이트가 채널의 3면을 감싸는 FinFET이나 4면 모두를 둘러싸 정전기적 조절력을 극대화한 <strong>GAA(Gate-All-Around) 소자</strong>를 도입하여 채널 제어 능력을 강화합니다." },
+                    { q: "CMOS 회로 설계에서 정적/동적 전력 소모(Power Dissipation)를 줄이기 위한 기법들은?", a: "정적 전력(누설 전류)을 최소화하기 위해 동작 속도가 중요하지 않은 경로에는 문턱 전압이 높은 소자를 쓰고, 고속 경로에는 낮은 소자를 혼용하는 <strong>Multi-Vt 설계</strong>를 적용합니다. 또한 대기 모드 시 전원을 차단하는 파워 게이팅(Power Gating) 스위치를 설계합니다. 동적 전력(스위칭 전력) 감소를 위해서는 클럭 신호의 불필요한 스위칭을 막는 <strong>클럭 게이팅(Clock Gating)</strong>을 기본 탑재하고, 연산 부하 조건에 따라 공급 전압과 동작 주파수를 동적으로 낮춰 제어하는 <strong>DVFS</strong> 전원 변환 루프 설계가 핵심입니다." }
+                ]
+            },
+            circuit: {
+                title: "전자회로",
+                subtitle: "아날로그 회로 및 증폭기 블록 설계의 근간이 되는 전형적인 필수 이론입니다.",
+                icon: "ph-wave-sine",
+                questions: [
+                    { q: "Ideal OP-AMP의 특징 3가지를 말해보세요.", a: "이상적인 OP-AMP는 첫째, <strong>입력 임피던스가 무한대</strong>이므로 입력단으로 유입되는 전류가 전혀 없어 이전 단에 부하 효과를 주지 않습니다. 둘째, <strong>출력 임피던스가 0</strong>이므로 부하 저항 크기에 상관없이 신호 손실 없이 출력 전압을 그대로 전달합니다. 셋째, <strong>개루프 전압 이득(Open-loop Gain)이 무한대</strong>여서 아주 미세한 입력 차이도 완벽하게 증폭하며 주파수 대역폭도 무한대입니다. 실제 회로 설계에서는 이러한 이상적 특성과 실제 소자의 비이상성(유한한 Gain, Offset, 기생 캐패시턴스 등) 간의 차이를 보상하기 위해 피드백 루프 안정도(Phase Margin) 및 주파수 보상 회로를 정밀하게 튜닝합니다." },
+                    { q: "BJT와 MOSFET의 차이점을 설명하세요.", a: "<strong>BJT는 전류 제어형 양극성 소자</strong>로 상호전도도(Gm)가 커 고속 동작과 구동 능력이 우수하지만 지속적인 전류 흐름으로 전력 소모가 큽니다. 반면 MOSFET은 전압 제어형 단극성 소자로 입력 임피던스가 극도로 높아 정적 전력 소모가 거의 없고 칩 면적이 작아 고집적화에 유리합니다. 따라서 현대 대용량 메모리 설계는 스태틱 노이즈 마진과 전력 효율이 극대화된 <strong>MOSFET 기반 CMOS 디지털 논리 회로가 주력</strong>을 이루며, 고속 드라이버나 아날로그 핵심 블록의 일부 고전류 회로에만 제한적으로 BJT를 복합 적용합니다." },
+                    { q: "Active Load(능동 부하)를 사용하는 이유와 장점은 무엇인가요?", a: "아날로그 증폭기 설계 시 저항 대신 트랜지스터(MOSFET)의 포화 영역 저항 성분을 능동 부하로 사용합니다. 그 이유는 첫째, <strong>칩 레이아웃 면적을 대폭 줄일 수 있기</strong> 때문입니다. 반도체 공정에서 큰 값의 수동 저항은 거대한 면적을 요구하지만 MOSFET은 작은 크격으로도 큰 임피던스를 대체합니다. 둘째, 트랜지스터의 출력 저항(Ro)은 매우 크기 때문에 <strong>증폭기의 전압 이득(Gain = -Gm * Ro)을 극대화</strong>할 수 있습니다. 셋째, 바이어스 회로의 제어를 통해 능동 부하의 전류원 세기를 조절하여 공정 및 온도 변동에 대한 유연한 회로 마진 확보가 가능해집니다." }
+                ]
+            },
+            hbm: {
+                title: "HBM",
+                subtitle: "AI 시대의 핵심. 고속 PHY 설계와 채널 신호 제어가 핵심 설계 과제입니다.",
+                icon: "ph-cube",
+                questions: [
+                    { q: "HBM(High Bandwidth Memory)이 일반 GDDR보다 AI에 적합한 이유는?", a: "HBM은 단일 칩 레벨에서 수직 적층된 DRAM 구조를 활용해 <strong>1024개 이상의 초광대역 버스 폭(I/O 채널)을 제공</strong>하므로, 물리적 버스 폭이 제한된 일반 GDDR보다 초고속 병렬 데이터 전송에 압도적으로 유리합니다. AI 가속기는 방대한 양의 인공지능 매트릭스 연산을 병렬 처리해야 하므로 초당 수 테라바이트 수준의 메모리 대역폭이 필수적입니다. 또한, 실리콘 인터포저 위에 GPU와 매우 가깝게 패키징되어 데이터 이동 거리가 짧으므로 신호 지연이 최소화되고 <strong>I/O당 전하 구동 전력이 낮아 전력 소모 효율도 GDDR 대비 획기적으로 개선</strong>됩니다." },
+                    { q: "TSV(Through Silicon Via) 공정이란 무엇인가요?", a: "TSV는 실리콘 웨이퍼 칩 자체를 수직으로 정밀 관통하는 미세 구멍(Via)을 뚫고 내부를 구리(Cu) 등의 도체 물질로 채워 칩 내부 배선을 직접 전기적으로 연결하는 <strong>3D 패키징 핵심 공정 기술</strong>입니다. 기존 와이어 본딩 방식에 비해 배선 거리가 대폭 단축되어 신호 전달 지연 시간(Delay)과 기생 저항/캐패시턴스를 획기적으로 낮출 수 있습니다. 회로 설계적으로는 초미세 TSV 채널의 기생 캡 성분으로 발생하는 신호 간섭과 전압 드롭(IR drop)을 방지하기 위해 각 TSV 라인의 전하 구동 드라이버 크기 최적화 및 정밀한 온칩 타이밍 조율 설계가 동반되어야 합니다." },
+                    { q: "HBM에서 열 방출(Thermal) 이슈를 해결하기 위한 방법은?", a: "HBM은 여러 개의 DRAM 다이가 수직으로 촘촘히 쌓여 있어 열 방출 경로가 좁고 발열량이 누적되기 쉬우며, 온도 상승 시 리프레시 주기 단축 및 트랜지스터 특성 열화가 발생합니다. 설계와 구조적 해결을 위해 칩 다이 사이에 열 전도율이 뛰어난 하이드로겔이나 에폭시 기반 특수 언더필(NCF/MUF) 접합 물질을 고도화하여 패키지 외부로의 열 경로를 넓힙니다. 또한 설계단에서는 다이 내부 곳곳에 <strong>정밀한 온도 센서(TS) 회로를 분산 배치</strong>하고, 특정 기준 온도 초과 시 내부 타이밍과 스로틀링(Throttling) 제어로 클럭 속도를 낮춰 칩 파괴를 방지하는 <strong>자가 보호 설계</strong>를 적용합니다." },
+                    { q: "HBM4에서 도입 예정인 하이브리드 본딩(Hybrid Bonding) 기술은 무엇인가요?", a: "하이브리드 본딩은 기존 칩 다이 간 연결 방식인 솔더 범프(Solder Bump) 없이, 실리콘 표면의 구리(Cu) 전극 패드와 주변 산화막 절연층을 다이렉트로 결합하는 <strong>무범프(Bump-less) 3D 적층 기술</strong>입니다. 범프가 차지하는 두께가 없어지므로 칩 적층 높이를 혁신적으로 낮출 수 있고 패드 간 간격을 1마이크로미터 이하로 촘촘히 좁혀 I/O 핀 밀도를 대폭 확장할 수 있습니다. 설계 관점에서는 접합 면의 물리적 커패시턴스가 극도로 낮아져 <strong>I/O 패드의 충방전 에너지 전력 소모를 줄일 수 있고</strong>, 접합부 저항성분 감소로 초고속 전송 PHY 설계가 한층 수월해지는 이점이 있습니다." },
+                    { q: "HBM 설계 시 신호 무결성(Signal Integrity)과 노이즈 차단을 위한 PHY 설계 고려사항은?", a: "HBM은 수천 개의 I/O 배선이 좁은 핏치로 인터포저와 범프를 통해 물리적으로 집적되므로 인접 선로 간 전자기적 크로스토크(Crosstalk)와 다중 신호 동시 전환 노이즈(SSN)가 매우 치명적입니다. 이를 해결하기 위해 PHY 설계 시 <strong>데이터 신호선 사이에 그라운드 쉴드(Shielding) 패턴을 교차 배치</strong>하고 전원 노이즈 필터링 캡을 보강합니다. 수신단에는 신호 찌그러짐을 보상해 주는 <strong>CTLE 이퀄라이저 회로</strong>를 설계하고, 배선 스큐로 발생하는 미세 타이밍 오차를 스스로 보정하기 위한 다이내믹 캘리브레이션 및 위상 고정 회로를 집적하여 신호 전달 마진을 확보합니다." }
+                ]
+            },
+            design: {
+                title: "회로 설계",
+                subtitle: "LDO, Bandgap, PLL, STA 등 아날로그/디지털 회로 설계 핵심 지식과 신뢰성 검증 과정입니다.",
+                icon: "ph-layout",
+                questions: [
+                    { q: "정적/동적 타이밍 분석(STA)에서 Setup Time과 Hold Time 마진 부족 시 해결 방안은?", a: "<strong>Setup Time 마진 부족</strong>은 데이터 경로 딜레이가 클럭 주기보다 커 생기는 불량이므로, 데이터 패스 상의 조합 논리 게이트 단수를 줄이거나 레이아웃 배선 저항을 낮추고 클럭 주파수를 하향 제어하여 해결합니다. 반면 <strong>Hold Time 마진 부족</strong>은 클럭 에지 도달 직후 데이터가 너무 일찍 변해 생기므로 데이터 패스 중간에 지연용 버퍼(Delay Buffer)를 삽입하여 데이터 도달 속도를 늦춰야 합니다. 홀드 마진은 클럭 주파수를 낮추더라도 해결할 수 없는 회로 고유 특성이므로, 설계 시 타이밍 클로저 단계를 거쳐 모든 PVT 조건에서 홀드 타임 마진이 최소 기준(0ns) 이상 확보되도록 보장합니다." },
+                    { q: "LDO(Low Drop-Out) 레귤레이터의 동작 원리와 루프 안정성 확보 방안은?", a: "LDO는 입력 전압 변동 속에서도 안정적인 출력 전압을 공급하는 선형 레귤레이터로 Error Amp, Pass Transistor, 피드백 루프로 구성됩니다. 안정성 확보를 위해 피드백 루프의 Phase Margin(위상 여유)을 60도 이상 확보해야 하며, <strong>밀러 보상(Miller Compensation) 콘덴서</strong>나 출력 커패시터의 ESR을 활용해 Dominant Pole을 제어합니다. 또한 주도적 폴(Dominant Pole)을 내부에 인위적으로 형성하는 밀러 보상 커패시터 회로나 출력 단자단의 저역 필터 보상 설계를 최적화하여 <strong>발진을 방지</strong>합니다." },
+                    { q: "Bandgap Reference(BGR) 회로의 목적과 온도 보상 원리는 무엇인가요?", a: "BGR은 전원 전압이나 온도에 독립적인 고정 기준 전압(약 1.25V)을 만들기 위해 사용됩니다. 온도 보상 원리는 바이폴라 소자(BJT)의 접합 전압 특성을 활용합니다. 온도가 올라갈수록 전압이 낮음(음의 온도계수, CTAT) 전압과, 두 BJT의 전류 밀도 차에서 발생하여 온도가 오를수록 높아지는 <strong>양의 온도계수(PTAT) 전압을 적절한 가중치로 합산</strong>하여 온도에 대한 기울기를 0으로 상쇄시키는 원리입니다. 이를 통해 <strong>양쪽 온도 변화 기울기를 서로 정확히 상쇄(0ppm/도)</strong> 시켜 일정한 전위 기준을 안정적으로 출력하도록 설계합니다." },
+                    { q: "PLL(Phase Locked Loop)의 각 구성 요소와 주파수 합성 원리를 설명하세요.", a: "PLL은 입력 클럭과 출력 피드백 클럭의 위상 차를 검출하는 위상 검출기(PFD), 이를 전류로 변환하는 차지 펌프(CP), 고주파 성분을 필터링하여 제어 전압을 만드는 루프 필터(LF), 전압에 따라 주파수를 만드는 전압 제어 발진기(VCO), 그리고 주파수를 분주하는 분주기(Divider)로 구성됩니다. 루프가 잠금(Lock) 상태가 되면 <strong>입력 주파수의 배수 형태의 안정적인 고주파 클럭을 생성</strong>하며, 설계 시에는 <strong>VCO의 지터(Jitter) 노이즈 억제</strong>가 최우선 과제입니다." }
+                ]
+            },
+            process: {
+                title: "반도체 공정",
+                subtitle: "웨이퍼 제조부터 세정, 증착, 식각 등 8대 공정의 세부 지식을 정리하세요.",
+                icon: "ph-wrench",
+                questions: [
+                    { q: "포토 공정(Photolithography)에서 해상도(Resolution)를 향상시키는 방안은?", a: "해상도(R)는 Rayleigh 공식인 <strong>R = k1 * (λ / NA)</strong>에 의해 결정됩니다. 해상도를 향상시키려면 1) 광원의 파장(λ)을 단축(DUV -> EUV 13.5nm), 2) 렌즈의 개구수(NA)를 키움(고개구수 High-NA EUV 도입), 3) 공정 상수(k1)를 낮춤(변형 조명계, 위상 천이 마스크 등 OAI/PSM 기술 적용) 등의 방법이 동원됩니다. 이러한 세 가지 파라미터 제어를 통해 설계 스펙 요구 조건에 맞는 <strong>미세 회로 패턴 한계를 극복</strong>합니다." },
+                    { q: "Dry Etch(건식 식각)와 Wet Etch(습식 식각)의 장단점을 비교해주세요.", a: "습식 식각은 화학 액체를 사용하여 화학 반응으로 제거하므로 등방성(Isotropic) 성질을 띠고 미세 패턴 형성에 불리하지만 선택비가 우수하고 속도가 빠릅니다. 건식 식각은 플라즈마 상태의 반응성 가스와 이온을 사용하여 <strong>이방성(Anisotropic) 성질</strong>을 가지므로 수직으로 정밀한 미세 패턴 식각이 가능하지만 장비가 비싸고 기판 손상(Damage)이 발생할 수 있습니다. 설계 시에는 이온 충돌에 의한 하부 박막 물리 손상이 유발되므로 이를 예방하기 위해 <strong>적절한 격리 보호막을 함께 레이아웃에 배치</strong>합니다." },
+                    { q: "ALD(Atomic Layer Deposition) 공정의 장단점은 무엇인가요?", a: "ALD는 가스를 교대로 주입하여 원자층 수준(Atomic level)의 초미세 두께를 제어하여 박막을 증착하는 공정입니다. 장점은 극도로 뛰어난 <strong>단차 피복성(Step Coverage)과 두께 균일도</strong>입니다. 3D 구조나 깊은 홀 구조에 완벽하게 대응 가능합니다. 단점은 <strong>증착 속도(Throughput)가 매우 느리다</strong>는 점입니다. 이로 인해 단위 시간당 웨이퍼 처리량 생산성이 일반 CVD에 비해 떨어져 양산성 확보를 위한 챔버 최적화 설계 및 배치 분산이 요구됩니다." }
+                ]
+            },
+            skms: {
+                title: "SKMS & 인성",
+                subtitle: "SK그룹 고유의 경영 철학과 인재상, 협업 및 갈등 해결 역량을 준비하세요.",
+                icon: "ph-users",
+                questions: [
+                    { q: "SKMS(SK Management System)란 무엇이며, VWBE의 뜻은?", a: "SKMS는 SK그룹 고유의 경영 철학과 기법을 체체화한 헌장입니다. <strong>VWBE</strong>는 'Voluntarily, Willingly, Brain Engagement'의 약자로, 구성원이 <strong>자발적(Voluntarily)이고 의욕적(Willingly)으로 두뇌를 활용(Brain Engagement)하여 일하는 태도</strong>를 의미합니다. 이를 통해 SUPEX(Super Excellent, 인간의 능력으로 도달할 수 있는 최고 수준)를 추구합니다. 엔지니어로서 기술적 한계를 극복하고 최적의 설계를 유도하기 위해 집요하게 파고드는 태도 역시 이에 부합합니다." },
+                    { q: "협업 중 팀원 간의 의견 충돌이나 갈등을 조율했던 경험은?", a: "갈등 조율의 핵심은 상호 경청과 객관적 데이터를 기반으로 공통의 최선책을 찾는 것입니다. 과거 프로젝트 설계 과정에서 전력 소모 저감과 동작 속도 확보를 두고 우선순위 충돌이 있었습니다. 각자의 설계를 시뮬레이션 수치로 정량화하여 비교 테이블로 정리했고, 동작 빈도가 낮지만 누설 전류가 많은 블록에만 <strong>Multi-Vt를 타협 적용하는 대안을 제안</strong>하여 양쪽 요구 조건을 만족시켰고 프로젝트 목표를 성공적으로 조율하여 완수했습니다." },
+                    { q: "어려운 과제를 만나 한계를 극복하고 도전했던 경험은?", a: "한계 극복을 위해서는 기존 방식의 틀을 깨는 집요함이 필요합니다. 과거 반도체 회로 설계 과제 중 동작 주파수는 충족했으나 가이드라인 초과 전력 소모 한계에 부딪힌 적이 있습니다. 단순히 트랜지스터 크기를 조정하는 방식 대신, 스위칭 전류를 줄이기 위한 클럭 트리 분기 설계와 <strong>로컬 클럭 게이팅 회로 구조</strong>를 새롭게 학습해 적용했습니다. 배선 라우팅을 수차례 재수정한 끝에 <strong>전력 소모를 15% 감축</strong>시켜 극복에 성공했습니다." }
+                ]
+            }
+        };
+
+        let currentTab = 'dram';
+
+        function renderNav() {
+            const desktopNav = document.getElementById('desktop-nav');
+            const mobileNav = document.getElementById('mobile-nav');
+            
+            desktopNav.innerHTML = '';
+            mobileNav.innerHTML = '';
+
+            Object.keys(interviewData).forEach(key => {
+                const isSelected = key === currentTab;
+                const data = interviewData[key];
+
+                // 데스크탑 메뉴 아이템 렌더링
+                const desktopBtn = document.createElement('button');
+                desktopBtn.className = `flex items-center gap-3 px-4 py-3.5 rounded-[16px] transition-all text-left w-full ${isSelected ? 'bg-toss-blueBg text-toss-blue font-bold' : 'text-toss-text hover:bg-toss-bg font-medium'}`;
+                desktopBtn.onclick = () => switchTab(key);
+                desktopBtn.innerHTML = `
+                    <i class="ph ${data.icon} text-xl ${isSelected ? 'text-toss-blue' : 'text-toss-subtext'}"></i>
+                    <span class="text-[16px]">${data.title}</span>
+                `;
+                desktopNav.appendChild(desktopBtn);
+
+                // 모바일 메뉴 아이템 렌더링 (Toss 스타일 칩셋 버튼)
+                const mobileBtn = document.createElement('button');
+                mobileBtn.className = `whitespace-nowrap px-5 py-2.5 rounded-full text-[15px] transition-all ${isSelected ? 'bg-toss-text text-toss-white font-bold shadow-sm' : 'bg-toss-bg text-toss-subtext font-medium'}`;
+                mobileBtn.onclick = () => switchTab(key);
+                mobileBtn.innerHTML = data.title;
+                mobileNav.appendChild(mobileBtn);
+            });
+        }
+
+        function renderContent() {
+            const data = interviewData[currentTab];
+            
+            // 헤더 렌더링
+            const header = document.getElementById('page-header');
+            header.innerHTML = `
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center">
+                        <i class="ph ${data.icon} text-2xl text-toss-text"></i>
+                    </div>
+                    <h2 class="text-[28px] md:text-[32px] font-bold text-toss-text">${data.title}</h2>
+                </div>
+                <p class="text-[15px] md:text-[16px] text-toss-subtext mt-3 leading-relaxed">${data.subtitle}</p>
+            `;
+
+            // Q&A 리스트 렌더링
+            const container = document.getElementById('qa-container');
+            container.innerHTML = '';
+
+            data.questions.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-[24px] p-5 md:p-7 shadow-toss cursor-pointer group active:scale-[0.99] transition-transform";
+                card.onclick = function() {
+                    const content = this.querySelector('.accordion-content');
+                    const chevron = this.querySelector('.chevron');
+                    const isOpen = content.classList.contains('open');
+                    
+                    // 토스 스타일: 클릭 시 다른 아코디언은 닫히지 않고 독립적으로 동작
+                    if(isOpen) {
+                        content.classList.remove('open');
+                        chevron.classList.remove('open');
+                    } else {
+                        content.classList.add('open');
+                        chevron.classList.add('open');
+                    }
+                };
+
+                card.innerHTML = `
+                    <div class="flex gap-4 items-start">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-toss-blueBg text-toss-blue flex items-center justify-center font-bold text-[15px]">
+                            Q
+                        </div>
+                        <div class="flex-1 pt-1">
+                            <h3 class="text-[17px] md:text-[19px] font-bold text-toss-text leading-snug tracking-tight pr-6">${item.q}</h3>
+                            <div class="accordion-content">
+                                <div class="bg-toss-bg rounded-[16px] p-5 mt-2">
+                                    <div class="flex gap-3">
+                                        <span class="text-toss-blue font-bold">A.</span>
+                                        <p class="text-[15px] md:text-[16px] text-[#333D4B] leading-relaxed break-keep">${item.a}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 pt-1">
+                            <i class="ph ph-caret-down text-xl text-toss-subtext chevron"></i>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            renderNav();
+            
+            // 컨텐츠 페이드 효과
+            const main = document.querySelector('main');
+            main.style.opacity = '0';
+            main.style.transform = 'translateY(10px)';
+            main.style.transition = 'all 0.2s ease-out';
+            
+            setTimeout(() => {
+                renderContent();
+                main.style.opacity = '1';
+                main.style.transform = 'translateY(0)';
+            }, 200);
+        }
+
+        function updateDday() {
+            const today = new Date();
+            const d1 = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            const d2 = new Date(today.getFullYear(), 6, 12); // 7월 12일 (0-indexed: 6)
+            
+            const diffTime = d2 - d1;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            let dDayStr = '';
+            if (diffDays > 0) {
+                dDayStr = `D-${diffDays}`;
+            } else if (diffDays === 0) {
+                dDayStr = 'D-Day';
+            } else {
+                dDayStr = `D+${Math.abs(diffDays)}`;
+            }
+            
+            const dDayEl = document.getElementById('d-day-text');
+            if (dDayEl) {
+                dDayEl.innerText = dDayStr;
+            }
+        }
+
+        // 초기화
+        window.onload = () => {
+            renderNav();
+            renderContent();
+            updateDday();
+        };
+    </script>
+</body>
+</html>
