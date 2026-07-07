@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A!SK 면접 준비 대시보드</title>
-    
+
     <!-- Pretendard Font (Toss 스타일의 핵심인 깔끔한 폰트) -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -37,7 +37,7 @@
             }
         }
     </script>
-    
+
     <style>
         body {
             background-color: #F2F4F6;
@@ -45,7 +45,7 @@
             -webkit-font-smoothing: antialiased;
             letter-spacing: -0.02em;
         }
-        
+
         /* 모바일 탭 스크롤바 숨기기 */
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
@@ -98,7 +98,7 @@
             <h1 class="text-2xl font-bold text-toss-text tracking-tight mb-1">SK Hynix</h1>
             <p class="text-toss-blue font-semibold text-lg">A!SK</p>
         </div>
-        
+
         <p class="text-xs font-semibold text-toss-subtext mb-3 px-2">INDEX</p>
         <nav class="flex-1 overflow-y-auto hide-scrollbar flex flex-col space-y-1 mb-6" id="desktop-nav">
             <!-- JS로 렌더링됨 -->
@@ -119,7 +119,7 @@
 
     <!-- 메인 컨텐츠 영역 -->
     <main class="flex-1 w-full max-w-5xl mx-auto md:mx-0 md:px-10 pb-20 pt-6 md:pt-14">
-        
+
         <!-- 페이지 헤더 -->
         <div class="px-6 md:px-0 mb-8" id="page-header">
             <!-- JS로 렌더링됨 -->
@@ -141,30 +141,30 @@
                 icon: "ph-memory",
                 questions: [
                     // 1. DRAM 구조 및 동작원리
-                    { q: "DRAM의 1T1C 구조와 동작 원리를 설명해주세요.", a: "DRAM은 <strong>1T1C 구조</strong>로, <strong>워드라인(WL)</strong>은 트랜지스터 스위치를 제어하고, <strong>비트라인(BL)</strong>은 전하를 이동시키는 데이터 입출력 경로 역할을 하며, <strong>커패시터(Cs)</strong>는 전하 축적 유무에 따라 <strong>디지털 데이터 '1'과 '0'을 구분하여 저장</strong>합니다. <strong>Read 동작</strong> 시에는 커패시터 전하가 비트라인과 <strong>전하 분배(Charge Sharing)</strong>되어 미세한 전압 차이를 형성하고, <strong>Write 동작</strong> 시에는 비트라인에 인가된 강한 VDD/GND 전위로 커패시터를 <strong>강제 충방전시켜 데이터를 기록</strong>합니다. 설계 관점에서는 고집적화에 따라 셀 면적이 줄어들어 <strong>정전용량(Cs)이 감소</strong>하고 누설 전류로 데이터가 사라지는 한계가 있습니다. 이를 극복하고자 유전율이 높은 <strong>High-k 유전체</strong>를 도입하고, 게이트를 매립해 <strong>유효 채널 경로를 길게 확보하는 BCAT 구조</strong>를 적용하고 있습니다." },
-                    
+                    { q: "DRAM의 1T1C 구조와 동작 원리를 설명해주세요.", a: "DRAM은 <strong>1T1C 구조</strong>로 작동합니다. <strong>워드라인(WL)</strong>은 셀 선택 스위치인 트랜지스터를 제어하고, <strong>비트라인(BL)</strong>은 데이터 전송 경로이며, <strong>커패시터(Cs)</strong>는 전하 축적 유무에 따라 <strong>디지털 데이터 '1'과 '0'을 저장</strong>합니다. <strong>Read 동작</strong> 시에는 커패시터 전하가 비트라인과 나누어지는 <strong>전하 분배(Charge Sharing) 현상</strong>을 통해 비트라인 전압을 미세하게 변화시키고 이를 S/A가 감지합니다. <strong>Write 동작</strong> 시에는 비트라인에 강한 VDD 혹은 GND 전압을 인가하고 워드라인을 켜서 커패시터를 <strong>강제로 충·방전시켜 기록</strong>합니다. 설계 시에는 소자 미세화로 <strong>셀 면적이 감소해 Cs가 낮아지고 누설 전류가 심해지는 한계</strong>가 있습니다. 이를 해결하고자 유전율이 높은 <strong>High-k 신물질을 도입</strong>하고, 게이트를 기판 하부에 매립해 <strong>유효 채널 길이를 연장하는 BCAT 구조</strong>를 적용합니다." },
+
                     // 2. DRAM 주요 동작들
                     { q: "Sense Amplifier의 역할에 대해 설명해보세요.", a: "Sense Amplifier(S/A)는 DRAM 셀에서 읽어낸 비트라인의 <strong>미세한 전압 차이를 VDD와 VSS 레벨로 빠르게 증폭</strong>하여 데이터를 명확히 판별하는 회로입니다. 읽기 동작 시 비트라인과 셀 커패시터 간의 <strong>전하 분배(Charge Sharing)</strong>가 일어나면 비트라인 쌍에 아주 작은 전압 차가 발생하며, S/A가 이를 신속하게 감지 및 증폭하여 데이터 손실을 막고 열려 있는 셀 데이터를 재기록합니다. 설계 시에는 S/A 구성 트랜지스터들의 문턱 전압 불일치(Vth mismatch)로 인한 센싱 에러를 예방하는 것이 가장 중요하며, 이를 해결하기 위해 오프셋을 사전에 보상해 주는 <strong>오프셋 제거(Offset Cancellation) 회로</strong>를 설계에 적용합니다." },
                     { q: "DRAM의 주요 동작 시퀀스(Active - Read/Write - Precharge)의 핵심 제어 흐름을 설명해 주세요.", a: "DRAM의 동작은 <strong>Active, Read/Write, Precharge 단계</strong>로 순차 제어됩니다. <strong>Active</strong> 단계에서는 행 주소 입력 후 워드라인을 켜 셀의 전하를 비트라인과 분배하는 <strong>Charge Sharing</strong>을 유도하고, 센스앰프(S/A)를 켜 전위차를 증폭 및 복구합니다. <strong>Read/Write</strong> 단계에서는 열 선택 선(CSL)을 켜 S/A에 래치된 데이터를 I/O 라인으로 전송하거나 데이터를 기록합니다. 마지막 <strong>Precharge</strong> 단계에서는 워드라인을 차단해 셀을 격리하고, 이퀄라이저 회로를 구동해 비트라인 쌍을 <strong>Half-VDD(VDD/2) 전위로 등전위화</strong>하여 다음 동작을 대기합니다." },
                     { q: "DRAM의 tRCD, tRP, tCL 파라미터가 회로 설계적 측면에서 의미하는 바는 무엇인가요?", a: "<strong>tRCD</strong>는 워드라인이 켜지고 비트라인 센스앰프가 활성화되어 읽기 명령을 수행할 수 있을 때까지의 지연 시간으로, 워드라인 배선의 저항/캐패시턴스(RC) 지연 감소가 설계 관건입니다. <strong>tRP</strong>는 사용한 뱅크를 닫고 비트라인 전압을 VDD의 절반으로 초기화하는 프리차지 시간이며, 프리차지 회로의 충방전 속도에 영향받습니다. <strong>tCL</strong>은 읽기 명령 인가 후 첫 데이터가 외부 핀으로 출력될 때까지의 대기 시간입니다. 데이터 경로의 지연 시간을 최소화하기 위해 고속 리피터와 스큐를 조율하는 <strong>DLL(Delay Locked Loop) 설계 최적화</strong>가 메인 설계 기법입니다." },
-                    
+
                     // 3. DRAM 트러블슈팅
                     { q: "DRAM에서 Refresh가 필요한 이유는 무엇인가요?", a: "DRAM의 데이터 저장소인 커패시터는 시간이 지남에 따라 <strong>누설 전류로 인해 저장된 전하를 점차 상실</strong>하게 됩니다. 이로 인해 데이터를 오인식하는 오류가 생기므로, 데이터가 사라지기 전 주기적으로 원래 데이터를 다시 읽고 보강해 주는 <strong>Refresh 동작이 필수적</strong>입니다. 설계 엔지니어는 누설 전류 경로를 최소화하는 레이아웃을 고안하고, 전력 소모를 줄이기 위해 셀의 온도 변화에 따라 리프레시 주기를 유연하게 제어하는 <strong>PASR(Partial Array Self Refresh) 회로 기법</strong> 등을 탑재하여 효율성을 높입니다." },
                     { q: "DRAM 캐패시터 용량(Cs) 확보를 위한 기술적 대책은 무엇인가요?", a: "DRAM의 미세화 공정이 진행될수록 커패시터 면적이 좁아져 정전용량(Cs)이 감소하므로, 충분한 센싱 마진을 얻기 위한 용량 확보가 필수적입니다. 이를 극복하기 위해 물리적 표면적을 늘릴 수 있도록 실린더(Cylinder) 또는 필라(Pillar) 형태의 수직 구조를 도입하고 <strong>종횡비(Aspect Ratio)를 극대화</strong>합니다. 또한, 기존 유전체인 산화막 대신 유전율이 매우 높은 <strong>High-k 금속 산화물(ZrO2, Al2O3)</strong> 기반의 다층 박막 구조를 활용합니다. 설계단에서는 커패시터 전하 누설을 줄이기 위해 전원 라인의 노이즈를 필터링하고 워드라인 부스팅 레벨을 안정적으로 공급하는 레귤레이터 회로 설계를 병행합니다." },
                     { q: "Row Hammer(로우 해머) 현상과 대응 방안은 무엇인가요?", a: "로우 해머는 특정 워드라인(Aggressor Row)을 매우 빠른 속도로 연속해서 활성화할 경우 <strong>인접한 워드라인(Victim Row) 셀 커패시터의 전하가 누설되어 데이터가 깨지는 불량 현상</strong>입니다. 기생 커패시턴스 결합이나 전하 포획 등이 원인입니다. 회로 설계적 대응 방안으로는 메모리 내부 컨트롤러가 워드라인 활성화 횟수를 모니터링하여 위험 수치에 도달하면 주변 인접 행들을 집중적으로 강제 리프레시해 주는 <strong>TRR(Target Row Refresh) 기술</strong>을 칩 내부에 집적합니다. 또한 셀 간 분리 영역인 소자 격리막(STI) 설계의 기생 정전용량 결합을 줄이는 레이아웃을 고안합니다." },
-                    
+
                     // 4. DRAM 트레이드오프
                     { q: "DRAM 셀 및 회로 설계 시 속도(tRCD/tRP) 향상과 전력/노이즈 간의 트레이드오프 관계는 무엇이며 이를 어떻게 극복하나요?", a: "DRAM의 동작 속도(tRCD, tRP)를 높이기 위해 워드라인과 비트라인을 빠르게 충방전시키면, <strong>Peak 전류 급증에 따른 전원 노이즈(IR Drop) 및 신뢰성 저하와 트레이드오프 관계</strong>를 가집니다. RC 지연을 줄이려 드라이버 소자가 키우면, 순간적으로 과도한 전류가 흘러 공급 전압을 떨어뜨려 주변 회로의 오동작을 유발합니다. 이를 극복하기 위해 설계 시 워드라인의 동작 타이밍을 다단계로 미세하게 분산 구동하는 <strong>구간 제어 및 분할 드라이버 기법</strong>을 적용합니다. 또한 어레이 내부 전원 배선에 <strong>디커플링 커패시터(Decap)</strong>를 분산 배치하여 스위칭 노이즈 마진을 확보함으로써 속도와 전력 안정성을 동시 충족합니다." },
-                    
+
                     // 5. SRAM 구조 및 동작원리
                     { q: "SRAM 셀의 기본 구조(6T 구조)와 Read/Write 동작 원리를 설명해 주세요.", a: "SRAM 셀은 <strong>2개의 풀업, 2개의 풀다운, 2개의 패스게이트 트랜지스터로 구성된 6T 구조</strong>를 가집니다. <strong>Read 동작</strong> 시에는 비트라인 쌍을 VDD로 프리차지한 후 워드라인을 활성화하며, 셀 내부 '0'이 저장된 노드와 연결된 비트라인 전위가 패스게이트를 통해 방전되면서 생기는 전압 차를 감지해 읽습니다. <strong>Write 동작</strong> 시에는 비트라인 쌍에 강제로 서로 반대되는 레벨을 인가하고 패스게이트를 켜서 래치의 전기적 평형 상태를 깨뜨려 데이터를 플립시킵니다. 설계 시에는 저전압 조건에서 데이터가 지워지는 <strong>홀드 마진(Hold Margin) 저하를 방지</strong>하기 위해 트랜지스터 간 문턱 전압 일치(Mismatch) 보정 레이아웃을 필수적으로 적용합니다." },
-                    
+
                     // 6. SRAM 트러블슈팅
                     { q: "SRAM 셀 설계 시 발생할 수 있는 'Half-Select(하프 셀렉트)' 불량 현상과 회로적 트러블슈팅 방안을 설명해 주세요.", a: "SRAM의 하프 셀렉트 현상은 쓰기 동작 시 선택된 행의 비선택 셀들이 <strong>워드라인만 활성화된 채 읽기 스트레스를 받아 데이터가 원치 않게 반전되는 불량 현상</strong>입니다. 비트라인이 VDD로 유지된 상태에서 워드라인이 켜지면 사실상 리드 동작이 수행되어 셀 내부 데이터가 플립될 위험에 노출됩니다. 이를 트러블슈팅하기 위해 설계단에서는 동일 행의 셀들을 물리적으로 분산시키는 <strong>열 인터리빙(Column Interleaving) 레이아웃</strong>을 적용합니다. 또한, 쓰기 시 비선택 열의 비트라인 전위를 순간적으로 보상해주거나 워드라인 전압을 미세하게 클램핑해주는 <strong>디스터번스 방지 어시스트 회로</strong>를 집적하여 오동작을 방지합니다." },
-                    
+
                     // 7. SRAM 트레이드오프
                     { q: "SRAM 셀 설계 시 Read Margin과 Write Margin의 트레이드오프 관계를 설명해 주세요.", a: "SRAM 셀 설계 시 읽기 안정성(Read Margin)과 쓰기 용이성(Write Margin)은 상충하는 <strong>트레이드오프 관계</strong>를 지닙니다. Read 동작 시에는 비트라인 전하에 의해 저장 노드 데이터가 반전되지 않도록 풀다운 NMOS가 패스게이트보다 충분히 강해야 안정적입니다. 반면 Write 동작 시에는 기존 노드 데이터를 강제 반전시켜야 하므로 패스게이트가 풀업 PMOS 로드보다 강해야 쉽게 기록됩니다. 이 모순을 극복하기 위해 설계 시 읽기 동작에서 워드라인 전압을 미세하게 낮춰주는 <strong>WL 언더드라이브(Underdrive)</strong> 기법이나, 쓰기 시 셀의 공급전원을 일시적으로 떨어뜨려 주는 <strong>Vdd 쓰기 어시스트(Write Assist) 회로</strong>를 적용합니다." },
-                    
+
                     // 8. DRAM과 SRAM 비교
                     { q: "SRAM과 DRAM의 구조적 차이점과 동작 특성을 비교해 주세요.", a: "SRAM은 <strong>교차 결합된 인버터 래치(6T 구조)</strong>를 사용해 데이터를 전기적으로 유지하는 정적 메모리이며, 커패시터를 사용하는 DRAM에 비해 동작 속도가 매우 빠르고 <strong>Refresh 동작이 필요 없습니다.</strong> 데이터 보존성이 우수하여 캐시 메모리로 쓰이지만, 셀 면적이 커 집적도에서는 DRAM 대비 불리합니다. 회로 설계적으로는 초미세 공정에서 트랜지스터 문턱 전압 편차로 인해 <strong>스태틱 노이즈 마진(SNM)이 감소</strong>하여 오동작할 위험이 큽니다. 이를 방지하기 위해 읽기/쓰기 모드에서 풀업/pull다운/패스게이트 트랜지스터 간의 <strong>사이즈 비(Beta Ratio)를 정밀 조율</strong>하고 어시스트 회로를 집적하여 안정성을 보장합니다." }
                 ]
@@ -174,12 +174,20 @@
                 subtitle: "비휘발성 메모리의 핵심. 스택 구조와 WL 로딩을 극복하는 회로 제어가 중요합니다.",
                 icon: "ph-stack",
                 questions: [
-                    { q: "NAND Flash의 쓰기(Program)와 지우기(Erase) 동작 원리는?", a: "NAND 플래시는 절연막 내부의 <strong>차지 트랩 레이어(CTF)에 전자를 가두거나 방출</strong>하여 데이터를 저장합니다. 쓰기 동작은 선택된 제어 게이트에 높은 고전압(약 20V)을 가해 채널의 전자가 터널 산화막을 통과해 트랩층으로 들어오게 만드는 <strong>FN 터널링 효과</strong>를 이용합니다. 지우기는 기판(Substrate)에 높은 전압을 인가하고 게이트를 0V로 두어 전자를 다시 기판으로 방출시킵니다. 설계 시에는 미세한 전압 조절이 필수적이므로 고전압을 생성하는 차지 펌프(Charge Pump)와 이를 정밀하게 쪼개어 단계적으로 높여 전압을 인가하는 <strong>ISPP 알고리즘 제어 회로 설계</strong>가 핵심입니다." },
-                    { q: "Floating Gate와 CTF(Charge Trap Flash)의 차이점은?", a: "플로팅 게이트는 도체 폴리실리콘에 전자를 저장하므로 두께가 두껍고 인접 셀 간 기생 정전용량 결합으로 인한 간섭(Interference) 현상이 큽니다. 반면 <strong>CTF는 질화막(SiN)과 같은 부도체 격자 구조에 전자를 트랩</strong>하므로 누설 위험이 적고 박막화가 가능합니다. 이를 통해 셀 간 간섭을 획기적으로 낮추어 셀 간격을 미세화할 수 있으며 3D 수직 적층 공정 구현을 가능케 만들었습니다. 설계적 관점에서는 CTF 도입으로 인해 <strong>낮아진 셀 간 간섭 레벨</strong>을 바탕으로 읽기 동작 시 문턱 전압 분해능 마진을 더 넓게 가져갈 수 있으며 읽기 패스 전압 설계를 다변화하는 제어가 가능해졌습니다." },
-                    { q: "3D NAND에서 단수가 높아질수록 발생하는 공정상 이슈는?", a: "3D NAND 단수가 높아질수록 채널 홀을 한 번에 관통해 뚫는 식각(Etch) 공정 난이도가 급증합니다. 구멍이 아래로 갈수록 좁아지는 테이퍼링(Tapering) 현상이나 수직 정렬 어긋남이 발생하여 <strong>최하단과 최상단 셀의 트랜지스터 크기 차이로 인한 문턱 전압(Vth) 불균일</strong>이 유발됩니다. 회로 설계 엔지니어는 이러한 셀 구조적 편차로 인한 오동작을 보상하기 위해, 워드라인의 물리적 높이에 따라 리드/라이트 바이어스 전압을 세부 영역별로 다르게 가변 제어하는 <strong>슬로프 전압 제어 및 적응형 전압 발생기 회로</strong>를 설계하여 칩의 동작 안정성을 확보해야 합니다." },
-                    { q: "NAND Flash의 SLC, MLC, TLC, QLC 방식의 특징을 설명해주세요.", a: "한 셀에 저장하는 비트 수에 따른 구분으로, SLC는 1비트(2개 상태), MLC는 2비트, TLC는 3비트, QLC는 4비트(16개 상태)를 저장합니다. 비트 수가 늘수록 동일 면적당 용량은 증가하나 <strong>문턱 전압 마진이 좁아져</strong> 속도가 느려지고 수명이 단축됩니다. 회로 설계 관점에서는 16개의 미세한 전압 레벨 분해능을 검출해내기 위해 노이즈가 극히 적은 <strong>고감도 페이지 버퍼(Page Buffer) 감지 회로</strong>와 다이내믹 센싱 기법이 핵심입니다. 또한 읽기 에러율 증가에 대응하여 에러를 정밀 복구하는 강력한 <strong>ECC(에러 정정) 컨트롤러 IP 설계 협력이 수반</strong>됩니다." },
-                    { q: "NAND의 Cell-to-Cell Interference(셀 간 간섭) 극복 방안은 무엇인가요?", a: "셀 간 간섭은 인접 셀의 쓰기 동작 전하 주입으로 인한 전계 변화가 이웃 셀의 문턱 전압(Vth)을 왜곡시키는 현상입니다. 설계적 극복 방안으로는 쓰기 시 인접 셀의 전압 변화 영향을 분산하기 위해 전압 레벨을 조금씩 번갈아 프로그래밍하는 <strong>섀도우 프로그램(Shadow Program)</strong>이나 2-pass 프로그램 기법을 적용합니다. 또한, 읽기 시에는 인접 워드라인의 상태를 미리 파악하고 그 상태에 따라 읽기 전압을 보상하여 인가하는 <strong>리드 리클레임 및 프리-리드(Pre-read) 보상 바이어스 제어 회로</strong>를 어레이 주변부 설계단에 구현하여 극복합니다." },
-                    { q: "3D NAND의 Wordline Loading 증가 문제를 회로 설계적으로 어떻게 극복하나요?", a: "3D NAND에서 워드라인 단수가 올라가고 블록 크기가 커지면 워드라인의 배선 길이가 길어지고 기생 캡 성분이 늘어나 저항-정전용량(RC) 지연이 급증합니다. 이는 쓰기/읽기 동작 시 전압 안정화 속도를 떨어뜨립니다. 이를 설계적으로 해결하기 위해 워드라인 양방향에서 독립적인 WL 드라이버가 동시에 전압을 인가하는 <strong>더블 사이드 구동(Double-sided Drive) 레이아웃</strong>을 도입합니다. 또한 고전압 충전 속도를 향상시키기 위해 과충전 기술인 <strong>프리-엠파시스(Pre-emphasis) 제어 루프</strong>와 구동 드라이버의 크기를 최적화하여 딜레이를 단축시킵니다." }
+                    // 1. NAND 구조 및 동작원리
+                    { q: "NAND Flash의 구조(String 구조)와 동작 원리는 무엇인가요?", a: "NAND 플래시는 <strong>비트라인(BL)과 소스라인(CSL) 사이에 선택 소자(DSL/SSL)와 셀들이 직렬 연결된 스트링(String) 구조</strong>입니다. 셀은 전압을 제어하는 <strong>컨트롤 게이트(CG)</strong>와 전하를 축적하는 <strong>플로팅 게이트(FG) 또는 트랩층</strong>이 적층된 구조입니다. <strong>쓰기(Program) 시</strong>에는 선택된 CG에 고전압을 가해 전하를 저장하고, <strong>읽기(Read) 시</strong>에는 선택된 CG에 판독 전압을, 비선택 CG에는 높은 <strong>패스 전압(Vpass)을 인가해 스트링 채널을 열어 전류가 흐르도록</strong> 만듭니다. 이때 선택 셀의 상태에 따라 비트라인의 <strong>전류 유무를 페이지 버퍼가 감지</strong>하여 데이터를 읽어냅니다. 설계 시에는 직렬 결합으로 인해 <strong>어레이 기생 저항이 크고 인접 셀 간 커플링 노이즈가 발생하는 한계</strong>가 있어 센싱 노드의 동작 마진 설계가 중요합니다." },
+                    { q: "Floating Gate와 CTF(Charge Trap Flash)의 차이점은 무엇인가요?", a: "플로팅 게이트는 도체 폴리실리콘에 전자를 저장하여 셀 두께가 두껍고 <strong>인접 셀 간 기생 캡 결합(간섭)이 크다는 한계</strong>가 있습니다. 반면 <strong>CTF는 부도체 질화막(SiN)의 전하 트랩에 전자를 고정</strong>하여 누설 전류가 적고 두께를 얇게 설계할 수 있어 셀 간 간섭을 획기적으로 낮춥니다. 이를 통해 수평적 간격을 좁히고 3D 수직 적층을 가능하게 했습니다. 설계 관점에서는 CTF 도입으로 <strong>셀 간 기생 커플링 노이즈가 감소</strong>함에 따라, 읽기 동작 시 센싱 전압 분해능 마진을 확보할 수 있고 다각화된 패스 전압 제어 알고리즘 설계가 가능해졌습니다." },
+
+                    // 2. NAND 주요 동작들
+                    { q: "NAND Flash의 쓰기(Program)와 지우기(Erase)의 세부 동작 원리는 무엇인가요?", a: "NAND 플래시의 쓰기/지우기는 터널 산화막을 경계로 전자를 이동시키는 <strong>FN 터널링(Fowler-Nordheim Tunneling) 현상</strong>을 이용합니다. <strong>Program 동작</strong>은 제어 게이트에 고전압(약 20V)을 가해 채널의 전자를 트랩층으로 주입하고, <strong>Erase 동작</strong>은 기판에 고전압을 인가하고 게이트를 0V로 두어 전자를 기판으로 방출시킵니다. 설계 시에는 셀 문턱 전압의 정밀 분배가 필수적이므로, 전압을 단계적으로 높여 인가하고 검증을 반복하는 <strong>ISPP(Incremental Step Pulse Program) 루프 회로</strong>를 제어단에 설계하여 동작 신뢰성을 확보합니다." },
+                    { q: "NAND Flash의 SLC, MLC, TLC, QLC 방식의 동작 특징을 설명해 주세요.", a: "셀 하나에 저장하는 비트 수에 따라 구분하며, SLC는 1비트, QLC는 4비트(16개 문턱전압 상태)를 기록합니다. 비트 수가 늘어날수록 용량은 급증하지만, 동일 윈도우 내에서 전압 레벨 간격이 조밀해져 <strong>센싱 마진이 극도로 협소해지는 트레이드오프</strong>가 있습니다. 회로 설계단에서는 16개의 미세한 문턱전압 상태를 정확히 검출하기 위해 고감도 <strong>페이지 버퍼(Page Buffer)와 다이내믹 센싱 스키마</strong>를 설계합니다. 또한 에러율 증가에 대비하여 컨트롤러 단에 강력한 <strong>ECC(에러정정코드) 하드웨어 엔진을 연계 설계</strong>합니다." },
+                    { q: "NAND의 동작 속도(Throughput)를 극대화하기 위한 페이지 버퍼의 다중 래치(Multi-latch) 구조와 캐시(Cache) 동작 원리를 설명해 주세요.", a: "페이지 버퍼는 메모리 셀 어레이와 외부 데이터 라인 사이에서 데이터를 일시 저장하고 감지하는 회로로, 감도 극대화와 속도 향상을 위해 <strong>캐시(Cache), 데이터(Data), 임시(Sense) 래치 등 다중 래치 구조</strong>로 설계됩니다. <strong>Cache 동작</strong> 시에는 실제 선택된 셀에 데이터를 라이트(Program)하는 동시에, 다음 동작할 데이터를 외부 I/O로부터 캐시 래치에 미리 로딩하여 병렬 연산(Pipelining)을 수행합니다. 이를 통해 <strong>데이터 입출력 병목 시간을 획기적으로 감추어(Hide)</strong> 전체 칩의 동작 대역폭을 향상시킵니다." },
+
+                    // 3. NAND 트러블 슈팅
+                    { q: "3D NAND에서 단수가 높아질수록 발생하는 동작 편차 이슈와 회로적 극복 방안은 무엇인가요?", a: "3D NAND 적층 단수가 올라가면 채널 홀 식각 시 하단으로 갈수록 구멍이 좁아지는 테이퍼링(Tapering) 현상으로 인해, <strong>상/하단 셀 트랜지스터 크기 편차에 의한 문턱 전압(Vth) 불균일</strong>이 유발됩니다. 이는 셀 성능 편차와 오동작의 원인이 됩니다. 회로 설계 엔지니어는 이 물리적 편차를 보상하기 위해, 워드라인의 수직 위치에 따라 인가 전압 바이어스를 다르게 제어하는 <strong>위치 적응형 전압 발생 회로</strong>를 구현합니다. 또한 단별로 리드/프로그램 바이어스 슬로프를 동적으로 가변 조정하는 알고리즘 회로를 적용하여 어레이 균일성을 확보합니다." },
+                    { q: "NAND의 Cell-to-Cell Interference(셀 간 간섭) 불량 현상과 설계적 대응 방안은 무엇인가요?", a: "셀 간 간섭은 인접 셀에 쓰기(Program) 전하가 주입될 때 발생하는 기생 커플링 전계로 인해 <strong>이웃 셀의 문턱 전압(Vth)이 왜곡되어 데이터 에러가 발생하는 불량 현상</strong>입니다. 이를 설계적으로 예방하기 위해 쓰기 시 인접 셀의 급격한 전압 변동을 완화하도록 바이어스를 다단계로 나눠 엇갈려 쓰는 <strong>섀도우 프로그램(Shadow Program) 회로</strong>를 탑재합니다. 또한 읽기 동작 시에는 인접 워드라인의 상태를 사전에 센싱하고, 그 상태에 대응해 리드 바이어스 전압을 실시간 보상해 주는 <strong>온칩 디지털 제어 루프 회로</strong>를 설계에 적용합니다." },
+                    { q: "NAND Flash에서 선택되지 않은 셀의 오프로그램을 방지하는 'Program Inhibit'과 'Channel Boosting'의 원리를 설명해 주세요.", a: "Program Inhibit은 쓰기를 원치 않는 스트링의 <strong>채널 전위를 강제로 높여 게이트-채널 간 전계차를 줄임으로써 FN 터널링을 차단</strong>하는 기술입니다. 동작 시 쓰기 제외 스트링의 선택 트랜지스터(SSL)를 오프시켜 채널을 플로팅(Floating) 상태로 만듭니다. 이후 주변 워드라인들에 패스 전압(Vpass)을 가하면, 게이트와 채널 간의 기생 커패시터 결합에 의해 채널 전위가 약 7~8V로 스스로 상승하는 <strong>채널 부스팅(Self-Boosting)</strong>이 발생합니다. 이를 통해 터널 산화막에 걸리는 실질 전압 차를 크게 낮춰 <strong>오동작을 방지</strong>합니다." },
+                    { q: "3D NAND의 Wordline Loading 증가로 인한 신호 지연 문제를 설계적으로 어떻게 해결하나요?", a: "3D NAND에서 단수 증가와 블록 대용량화가 진행되면 워드라인 배선의 물리적 길이와 기생 캡 성분이 늘어나 <strong>RC 지연시간이 급증하고 쓰기/읽기 속도가 저하되는 문제</strong>가 발생합니다. 이 로딩을 극복하기 위해 설계 시 워드라인 좌우 양방향에서 동시에 구동 신호를 인가하는 <strong>더블 사이드 드라이버(Double-sided Driver) 레이아웃</strong>을 배치합니다. 또한 초기 전압 인가 시 과도한 전하를 공급해 과도 응답을 단축시키는 <strong>프리-엠파시스(Pre-emphasis) 스위칭 제어 회로</strong>를 전원 발생 블록에 추가 설계하여 전압의 셋업 타임을 가속화합니다. " }
                 ]
             },
             cmos: {
@@ -199,7 +207,9 @@
                 icon: "ph-wave-sine",
                 questions: [
                     { q: "Ideal OP-AMP의 특징 3가지를 말해보세요.", a: "이상적인 OP-AMP는 첫째, <strong>입력 임피던스가 무한대</strong>이므로 입력단으로 유입되는 전류가 전혀 없어 이전 단에 부하 효과를 주지 않습니다. 둘째, <strong>출력 임피던스가 0</strong>이므로 부하 저항 크기에 상관없이 신호 손실 없이 출력 전압을 그대로 전달합니다. 셋째, <strong>개루프 전압 이득(Open-loop Gain)이 무한대</strong>여서 아주 미세한 입력 차이도 완벽하게 증폭하며 주파수 대역폭도 무한대입니다. 실제 회로 설계에서는 이러한 이상적 특성과 실제 소자의 비이상성(유한한 Gain, Offset, 기생 캐패시턴스 등) 간의 차이를 보상하기 위해 피드백 루프 안정도(Phase Margin) 및 주파수 보상 회로를 정밀하게 튜닝합니다." },
-                    { q: "BJT와 MOSFET의 차이점을 설명하세요.", a: "<strong>BJT는 전류 제어형 양극성 소자</strong>로 상호전도도(Gm)가 커 고속 동작과 구동 능력이 우수하지만 지속적인 전류 흐름으로 전력 소모가 큽니다. 반면 MOSFET은 전압 제어형 단극성 소자로 입력 임피던스가 극도로 높아 정적 전력 소모가 거의 없고 칩 면적이 작아 고집적화에 유리합니다. 따라서 현대 대용량 메모리 설계는 스태틱 노이즈 마진과 전력 효율이 극대화된 <strong>MOSFET 기반 CMOS 디지털 논리 회로가 주력</strong>을 이루며, 고속 드라이버나 아날로그 핵심 블록의 일부 고전류 회로에만 제한적으로 BJT를 복합 적용합니다." },
+                    { q: "BJT(Bipolar Junction Transistor)의 기본 구조와 동작 원리를 설명해 주세요.", a: "BJT는 <strong>N형과 P형 반도체를 NPN 또는 PNP 형태로 접합한 3단자(Emitter, Base, Collector) 소자</strong>로, 베이스 전류를 제어하여 컬렉터 전류를 조절하는 전류 제어형 소자입니다. 활성 영역(Active) 동작 시 베이스-이메터 접합의 순방향 바이어스로 인해 이메터에서 주입된 다수 캐리어가 얇은 베이스 영역을 확산(Diffusion)을 통해 통과하고, 베이스-컬렉터 접합의 역방향 전계에 끌려가 컬렉터 전류를 형성합니다. BJT는 <strong>상호전도도(Gm)가 매우 커 전류 구동 능력이 우수</strong>하여 고속 동작과 아날로그 증폭 회로에 적합하지만, 입력단으로 베이스 전류가 계속 유입되므로 <strong>정적 전력 소모가 발생한다는 한계</strong>가 있습니다." },
+                    { q: "MOSFET(Metal-Oxide-Semiconductor FET)의 기본 구조와 동작 원리를 설명해 주세요.", a: "MOSFET은 <strong>게이트(Gate), 소스(Source), 드레인(Drain), 기판(Body)의 4단자 구조</strong>를 지니며, 게이트 전압을 통해 채널을 형성하여 전류를 제어하는 전압 제어형 소자입니다. 게이트에 문턱 전압(Vth) 이상의 전압을 인가하면 게이트 산화막 아래에 반전층(Inversion layer) 채널이 형성되며, 소스와 드레인 사이에 전압차가 가해지면 채널을 통해 캐리어가 이동하며 전류가 흐릅니다. MOSFET은 <strong>게이트가 절연되어 입력 임피던스가 거의 무한대</strong>이므로 정적 전력 소모가 차단되고, 소자 면적이 작아 <strong>초고집적 디지털 CMOS 집적 회로 설계의 핵심</strong> 소자로 사용됩니다." },
+                    { q: "BJT와 MOSFET의 주요 차이점은 무엇인가요?", a: "<strong>BJT는 전류 제어형 양극성 소자</strong>로 캐리어 수송에 전자와 정공이 모두 참여하며, 상호전도도(Gm)가 커 고주파수 동작 및 전력 드라이브 능력이 우수한 장점이 있습니다. 반면 <strong>MOSFET은 전압 제어형 단극성 소자</strong>로 게이트 산화막 절연 덕분에 정적 전력 소모가 없고 칩 면적이 작아 고집적화에 유리합니다. 따라서 현대 메모리와 CPU 설계는 <strong>MOSFET 기반 CMOS 디지털 회로가 주류</strong>를 형성하고 있으며, 고속 구동이나 센싱 앰프 등 높은 Gm이 요구되는 아날로그 블록의 특정 경로에만 제한적으로 BJT를 복합하여 설계합니다." },
                     { q: "Active Load(능동 부하)를 사용하는 이유와 장점은 무엇인가요?", a: "아날로그 증폭기 설계 시 저항 대신 트랜지스터(MOSFET)의 포화 영역 저항 성분을 능동 부하로 사용합니다. 그 이유는 첫째, <strong>칩 레이아웃 면적을 대폭 줄일 수 있기</strong> 때문입니다. 반도체 공정에서 큰 값의 수동 저항은 거대한 면적을 요구하지만 MOSFET은 작은 크격으로도 큰 임피던스를 대체합니다. 둘째, 트랜지스터의 출력 저항(Ro)은 매우 크기 때문에 <strong>증폭기의 전압 이득(Gain = -Gm * Ro)을 극대화</strong>할 수 있습니다. 셋째, 바이어스 회로의 제어를 통해 능동 부하의 전류원 세기를 조절하여 공정 및 온도 변동에 대한 유연한 회로 마진 확보가 가능해집니다." }
                 ]
             },
@@ -212,7 +222,9 @@
                     { q: "TSV(Through Silicon Via) 공정이란 무엇인가요?", a: "TSV는 실리콘 웨이퍼 칩 자체를 수직으로 정밀 관통하는 미세 구멍(Via)을 뚫고 내부를 구리(Cu) 등의 도체 물질로 채워 칩 내부 배선을 직접 전기적으로 연결하는 <strong>3D 패키징 핵심 공정 기술</strong>입니다. 기존 와이어 본딩 방식에 비해 배선 거리가 대폭 단축되어 신호 전달 지연 시간(Delay)과 기생 저항/캐패시턴스를 획기적으로 낮출 수 있습니다. 회로 설계적으로는 초미세 TSV 채널의 기생 캡 성분으로 발생하는 신호 간섭과 전압 드롭(IR drop)을 방지하기 위해 각 TSV 라인의 전하 구동 드라이버 크기 최적화 및 정밀한 온칩 타이밍 조율 설계가 동반되어야 합니다." },
                     { q: "HBM에서 열 방출(Thermal) 이슈를 해결하기 위한 방법은?", a: "HBM은 여러 개의 DRAM 다이가 수직으로 촘촘히 쌓여 있어 열 방출 경로가 좁고 발열량이 누적되기 쉬우며, 온도 상승 시 리프레시 주기 단축 및 트랜지스터 특성 열화가 발생합니다. 설계와 구조적 해결을 위해 칩 다이 사이에 열 전도율이 뛰어난 하이드로겔이나 에폭시 기반 특수 언더필(NCF/MUF) 접합 물질을 고도화하여 패키지 외부로의 열 경로를 넓힙니다. 또한 설계단에서는 다이 내부 곳곳에 <strong>정밀한 온도 센서(TS) 회로를 분산 배치</strong>하고, 특정 기준 온도 초과 시 내부 타이밍과 스로틀링(Throttling) 제어로 클럭 속도를 낮춰 칩 파괴를 방지하는 <strong>자가 보호 설계</strong>를 적용합니다." },
                     { q: "HBM4에서 도입 예정인 하이브리드 본딩(Hybrid Bonding) 기술은 무엇인가요?", a: "하이브리드 본딩은 기존 칩 다이 간 연결 방식인 솔더 범프(Solder Bump) 없이, 실리콘 표면의 구리(Cu) 전극 패드와 주변 산화막 절연층을 다이렉트로 결합하는 <strong>무범프(Bump-less) 3D 적층 기술</strong>입니다. 범프가 차지하는 두께가 없어지므로 칩 적층 높이를 혁신적으로 낮출 수 있고 패드 간 간격을 1마이크로미터 이하로 촘촘히 좁혀 I/O 핀 밀도를 대폭 확장할 수 있습니다. 설계 관점에서는 접합 면의 물리적 커패시턴스가 극도로 낮아져 <strong>I/O 패드의 충방전 에너지 전력 소모를 줄일 수 있고</strong>, 접합부 저항성분 감소로 초고속 전송 PHY 설계가 한층 수월해지는 이점이 있습니다." },
-                    { q: "HBM 설계 시 신호 무결성(Signal Integrity)과 노이즈 차단을 위한 PHY 설계 고려사항은?", a: "HBM은 수천 개의 I/O 배선이 좁은 핏치로 인터포저와 범프를 통해 물리적으로 집적되므로 인접 선로 간 전자기적 크로스토크(Crosstalk)와 다중 신호 동시 전환 노이즈(SSN)가 매우 치명적입니다. 이를 해결하기 위해 PHY 설계 시 <strong>데이터 신호선 사이에 그라운드 쉴드(Shielding) 패턴을 교차 배치</strong>하고 전원 노이즈 필터링 캡을 보강합니다. 수신단에는 신호 찌그러짐을 보상해 주는 <strong>CTLE 이퀄라이저 회로</strong>를 설계하고, 배선 스큐로 발생하는 미세 타이밍 오차를 스스로 보정하기 위한 다이내믹 캘리브레이션 및 위상 고정 회로를 집적하여 신호 전달 마진을 확보합니다." }
+                    { q: "HBM 설계 시 신호 무결성(Signal Integrity)과 노이즈 차단을 위한 PHY 설계 고려사항은?", a: "HBM은 수천 개의 I/O 배선이 좁은 핏치로 인터포저와 범프를 통해 물리적으로 집적되므로 인접 선로 간 전자기적 크로스토크(Crosstalk)와 다중 신호 동시 전환 노이즈(SSN)가 매우 치명적입니다. 이를 해결하기 위해 PHY 설계 시 <strong>데이터 신호선 사이에 그라운드 쉴드(Shielding) 패턴을 교차 배치</strong>하고 전원 노이즈 필터링 캡을 보강합니다. 수신단에는 신호 찌그러짐을 보상해 주는 <strong>CTLE 이퀄라이저 회로</strong>를 설계하고, 배선 스큐로 발생하는 미세 타이밍 오차를 스스로 보정하기 위한 다이내믹 캘리브레이션 및 위상 고정 회로를 집적하여 신호 전달 마진을 확보합니다." },
+                    { q: "HBM 테스트 용이성 설계(DFT) 및 Base Die 내 BIST(Built-In Self-Test) 회로의 역할은 무엇인가요?", a: "HBM은 수직 적층 구조상 적층 후 개별 다이의 불량 검출이 극히 어려워, 최하단 <strong>Base Die에 IEEE 1500 포트와 BIST(Built-In Self-Test) 회로를 집적</strong>하여 개별 칩 상태를 자체 진단합니다. BIST는 외부 테스터 없이 내부에서 의사 무작위 패턴을 자동 생성해 각 TSV 경로의 단선/단락 및 셀 오류를 검증합니다. 검증 결과 불량 TSV가 발견되면 <strong>리던던시(Redundancy) TSV 채널로 자동 전환 매핑</strong>하는 회로를 설계에 반영합니다. 이는 테스트 공정 오버헤드를 낮추어 적층 최종 수율을 보장하는 핵심 DFT 설계 기술입니다." },
+                    { q: "HBM의 고속 동작 시 PVT 변동에 따른 타이밍 스큐(Skew) 극복을 위한 DLL 및 트레이닝 회로의 설계적 역할은 무엇인가요?", a: "HBM이 초당 수 Gbps 속도로 동작할 때 발생하는 신호 지연 편차를 조율하기 위해 <strong>DLL(Delay Locked Loop)과 DQS-DQ 트레이닝 회로</strong>를 PHY에 내장하여 데이터 눈(Eye) 마진을 실시간 확보합니다. PVT 변동으로 신호 왜곡 및 스큐가 발생하면 DLL이 미세 피코초 단위로 위상을 가변 제어하며, 초기 부팅 시 <strong>Write/Read Training</strong>을 수행해 클럭(DQS) 에지를 데이터(DQ) 정중앙에 정렬합니다. 설계적으로는 전원 변동에 의한 <strong>DLL의 위상 지터(Jitter) 노이즈를 억제</strong>하기 위해 LDO 등 온칩 레귤레이터를 DLL 전용 전원으로 분리 설계합니다." }
                 ]
             },
             design: {
@@ -253,7 +265,7 @@
         function renderNav() {
             const desktopNav = document.getElementById('desktop-nav');
             const mobileNav = document.getElementById('mobile-nav');
-            
+
             desktopNav.innerHTML = '';
             mobileNav.innerHTML = '';
 
@@ -282,7 +294,7 @@
 
         function renderContent() {
             const data = interviewData[currentTab];
-            
+
             // 헤더 렌더링
             const header = document.getElementById('page-header');
             header.innerHTML = `
@@ -306,7 +318,7 @@
                     const content = this.querySelector('.accordion-content');
                     const chevron = this.querySelector('.chevron');
                     const isOpen = content.classList.contains('open');
-                    
+
                     // 토스 스타일: 클릭 시 다른 아코디언은 닫히지 않고 독립적으로 동작
                     if(isOpen) {
                         content.classList.remove('open');
@@ -347,13 +359,13 @@
         function switchTab(tabId) {
             currentTab = tabId;
             renderNav();
-            
+
             // 컨텐츠 페이드 효과
             const main = document.querySelector('main');
             main.style.opacity = '0';
             main.style.transform = 'translateY(10px)';
             main.style.transition = 'all 0.2s ease-out';
-            
+
             setTimeout(() => {
                 renderContent();
                 main.style.opacity = '1';
@@ -365,10 +377,10 @@
             const today = new Date();
             const d1 = new Date(today.getFullYear(), today.getMonth(), today.getDate());
             const d2 = new Date(today.getFullYear(), 6, 12); // 7월 12일 (0-indexed: 6)
-            
+
             const diffTime = d2 - d1;
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            
+
             let dDayStr = '';
             if (diffDays > 0) {
                 dDayStr = `D-${diffDays}`;
@@ -377,7 +389,7 @@
             } else {
                 dDayStr = `D+${Math.abs(diffDays)}`;
             }
-            
+
             const dDayEl = document.getElementById('d-day-text');
             if (dDayEl) {
                 dDayEl.innerText = dDayStr;
