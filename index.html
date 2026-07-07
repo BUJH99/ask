@@ -57,16 +57,21 @@
 
         /* 아코디언 애니메이션 */
         .accordion-content {
-            transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin 0.3s ease-out;
-            max-height: 0;
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease-out, opacity 0.3s ease-out, margin 0.3s ease-out;
             opacity: 0;
             overflow: hidden;
             margin-top: 0;
         }
         .accordion-content.open {
-            max-height: 500px; /* 충분히 큰 값 */
+            grid-template-rows: 1fr;
             opacity: 1;
             margin-top: 1rem;
+        }
+        .accordion-content > div {
+            min-height: 0;
+            overflow: hidden;
         }
         .chevron {
             transition: transform 0.3s ease;
