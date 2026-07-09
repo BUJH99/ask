@@ -195,6 +195,7 @@
                 subtitle: "디지털 회로 설계의 뼈대. 스위칭 특성과 전력 최소화 설계 기법이 핵심입니다.",
                 icon: "ph-cpu",
                 questions: [
+                    { q: "CMOS의 기본 구조와 인버터 동작 원리를 설명해 주세요.", a: "CMOS(Complementary Metal-Oxide-Semiconductor)는 <strong>PMOS와 NMOS를 상보적으로 연결한 회로 구조</strong>입니다. 가장 기본적인 CMOS 인버터에서는 PMOS가 <strong>VDD와 출력 노드 사이의 풀업(Pull-up) 소자</strong>로, NMOS가 <strong>출력 노드와 GND 사이의 풀다운(Pull-down) 소자</strong>로 배치됩니다. 두 소자의 게이트는 하나의 입력에 연결되고 드레인은 출력에 함께 연결됩니다. 입력이 Low이면 PMOS는 켜지고 NMOS는 꺼져 출력이 VDD, 즉 High가 됩니다. 반대로 입력이 High이면 PMOS는 꺼지고 NMOS가 켜져 출력이 GND, 즉 Low가 됩니다. 따라서 <strong>입력의 논리값을 반전</strong>하면서 안정 상태에는 VDD와 GND를 잇는 직류 경로가 거의 없어 정적 전력이 매우 작습니다. 다만 입력이 바뀌는 순간에는 두 소자가 잠시 함께 켜지고 출력 부하 커패시턴스가 충·방전되므로 동적 전력이 발생합니다." },
                     { q: "CMOS를 사용하는 가장 큰 이유는 무엇인가요?", a: "CMOS는 NMOS와 PMOS를 상보적으로 결합하여 구성한 회로로, <strong>정적 전력 소모(Static Power Dissipation)가 0에 가깝다</strong>는 장점 때문에 사용됩니다. 입력 상태가 하이 또는 로우로 유지되는 정상 상태에서는 PMOS와 NMOS 중 반드시 하나가 꺼져 VDD에서 GND로 흐르는 전류 경로가 차단됩니다. 단, 전위가 바뀌는 천이 동작 순간에는 두 소자가 일시적으로 동시에 켜져 단락 전류와 충방전 전류에 의한 동적 전력이 소모됩니다. 설계 시에는 이러한 동적 전력과 누설 전류를 줄이기 위해 소자의 물리적 배치를 최적화하고 누설 억제용 기판 바이어스 설계 등을 적용합니다." },
                     { q: "Latch-up 현상이란 무엇이며 어떻게 방지하나요?", a: "래치업은 CMOS 구조 내부에 형성된 기생 p-n-p-n 바이폴라(SCR) 구조가 오동작하여 <strong>VDD와 GND 사이에 저항이 낮은 급격한 전류 경로가 열려 과전류로 칩이 파괴되는 현상</strong>입니다. 외부 노이즈나 급격한 전원 전압 인가가 주요 원인입니다. 설계 예방 대책으로는 기생 트랜지스터의 이득을 낮추기 위해 n웰과 p기판의 기생 저항을 줄이는 <strong>가드링(Guard Ring) 배치를 촘촘하게</strong> 둘러 노이즈 전하를 방출시킵니다. 또한 웰 콘택을 활성 영역에 가깝고 촘촘하게 배치하여 저항 성분을 낮추고, 레이아웃 단계에서 PMOS와 NMOS 간 격리 거리 규격을 철저히 준수하여 설계합니다." },
                     { q: "Short Channel Effect(단채널 효과)와 해결 방안은 무엇인가요?", a: "단채널 효과는 MOSFET의 채널 길이가 극도로 짧아짐에 따라 게이트의 채널 지배력이 약화되고 드레인 공핍 영역이 소스에 영향을 미쳐 <strong>문턱 전압이 감소하고 누설 전류가 증가하는 현상</strong>입니다. DIBL이나 펀치스루 등이 포함됩니다. 설계적 해결을 위해 게이트 절연막 두께를 얇게 하고 High-k 유전체를 사용하며, 채널 접합 구조를 3차원으로 확장하여 게이트가 채널의 3면을 감싸는 FinFET이나 4면 모두를 둘러싸 정전기적 조절력을 극대화한 <strong>GAA(Gate-All-Around) 소자</strong>를 도입하여 채널 제어 능력을 강화합니다." },
@@ -314,6 +315,7 @@
             container.innerHTML = '';
 
             data.questions.forEach((item, index) => {
+                const answerCharacterCount = getAnswerCharacterCount(item.a);
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-[24px] p-5 md:p-7 shadow-toss cursor-pointer group active:scale-[0.99] transition-transform";
                 card.onclick = function() {
@@ -346,6 +348,9 @@
                                         <span class="text-toss-blue font-bold">A.</span>
                                         <p class="text-[15px] md:text-[16px] text-[#333D4B] leading-relaxed break-keep">${item.a}</p>
                                     </div>
+                                    <p class="mt-3 text-right text-[12px] font-medium text-toss-subtext" aria-label="답변 글자 수 ${answerCharacterCount}자, 공백 포함">
+                                        글자 수 <span class="font-semibold text-toss-text">${answerCharacterCount}자</span> <span class="text-[11px]">(공백 포함)</span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -356,6 +361,12 @@
                 `;
                 container.appendChild(card);
             });
+        }
+
+        function getAnswerCharacterCount(answerHtml) {
+            const temporaryElement = document.createElement('div');
+            temporaryElement.innerHTML = answerHtml;
+            return Array.from(temporaryElement.textContent || '').length;
         }
 
         function switchTab(tabId) {
