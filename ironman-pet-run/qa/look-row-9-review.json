@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "reviewer": "parent",
+  "registration": "shared scale 0.5196850393700787; no edge failure reported by extended assembly",
+  "directions": [
+    {"degree":"000","expected":"up","verdict":"pass","reason":"helmet brow and cyan eye slits are visibly raised above their neutral alignment."},
+    {"degree":"022.5","expected":"up-right","verdict":"pass","reason":"head begins a small screen-right turn while retaining an upward eye/brow cue."},
+    {"degree":"045","expected":"up-right","verdict":"pass","reason":"helmet faceplate advances evenly screen-right with an elevated gaze."},
+    {"degree":"067.5","expected":"up-right","verdict":"pass","reason":"screen-right turn increases smoothly while the eye slits remain above center."},
+    {"degree":"090","expected":"screen-right","verdict":"pass","reason":"faceplate and cyan eye slits project unmistakably toward viewer screen-right."},
+    {"degree":"112.5","expected":"down-right","verdict":"pass","reason":"right-facing helmet begins a controlled downward dip."},
+    {"degree":"135","expected":"down-right","verdict":"pass","reason":"eye slits and faceplate retain rightward aim with a clear lower gaze."},
+    {"degree":"157.5","expected":"down-right","verdict":"pass","reason":"final row pose continues toward the down anchor without reversal or baseline shift."}
+  ],
+  "continuity": "Adjacent normalized poses show a smooth clockwise helmet turn, constant boot baseline, and stable chest-reactor placement."
+}

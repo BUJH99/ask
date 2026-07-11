@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "spriteVersionNumber": 2,
+  "run_dir": "C:\\Users\\tbdk5\\Desktop\\MAIN\\0_Working\\A!Sk\\ironman-pet-run",
+  "spritesheet": "C:\\Users\\tbdk5\\Desktop\\MAIN\\0_Working\\A!Sk\\ironman-pet-run\\final\\spritesheet-extended.webp",
+  "validation": "C:\\Users\\tbdk5\\Desktop\\MAIN\\0_Working\\A!Sk\\ironman-pet-run\\final\\validation-extended.json",
+  "chroma_despill": "C:\\Users\\tbdk5\\Desktop\\MAIN\\0_Working\\A!Sk\\ironman-pet-run\\qa\\chroma-despill-extended.json",
+  "contact_sheet": "C:\\Users\\tbdk5\\Desktop\\MAIN\\0_Working\\A!Sk\\ironman-pet-run\\qa\\contact-sheet-extended.png",
+  "direction_sheet": "C:\\Users\\tbdk5\\Desktop\\MAIN\\0_Working\\A!Sk\\ironman-pet-run\\qa\\look-directions.png",
+  "direction_semantics": "C:\\Users\\tbdk5\\Desktop\\MAIN\\0_Working\\A!Sk\\ironman-pet-run\\qa\\direction-semantics.json",
+  "blind_direction_validation": "C:\\Users\\tbdk5\\Desktop\\MAIN\\0_Working\\A!Sk\\ironman-pet-run\\qa\\direction-blind-validation.json",
+  "continuity": "C:\\Users\\tbdk5\\Desktop\\MAIN\\0_Working\\A!Sk\\ironman-pet-run\\qa\\look-continuity.json",
+  "review": "C:\\Users\\tbdk5\\Desktop\\MAIN\\0_Working\\A!Sk\\ironman-pet-run\\qa\\review.json",
+  "package": "C:\\Users\\tbdk5\\.codex\\pets\\ironman"
+}
